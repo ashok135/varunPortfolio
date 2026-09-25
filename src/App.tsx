@@ -4,6 +4,7 @@ import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { EditorialProfileSection } from './components/EditorialProfileSection';
 import { CinematicShowreel } from './components/CinematicShowreel';
+import { VelocityGallerySection } from './components/VelocityGallerySection';
 import { CuratedWorks } from './components/CuratedWorks';
 import { ExperienceJournal } from './components/ExperienceJournal';
 import { ContactSection } from './components/ContactSection';
@@ -116,6 +117,7 @@ export const App: React.FC = () => {
         />
         <EditorialProfileSection />
         <CinematicShowreel />
+        <VelocityGallerySection />
         <CuratedWorks 
           activeCategory={selectedCategory}
           onSelectCategory={handleSelectCategory}
