@@ -124,7 +124,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
 ];
 
 // Single 3D Plane Card
-// Botanical Editorial White Theme + 100% Hoverable & Clickable across all viewport cards
+// Botanical Editorial White Theme + Silky Smooth 120fps GPU Motion + 100% Hoverable & Clickable across all viewport cards
 const DiagonalPlaneCard: React.FC<{
   item: GalleryPlaneItem;
   index: number;
@@ -133,8 +133,6 @@ const DiagonalPlaneCard: React.FC<{
   springVelocity: any;
   onSelect: (item: GalleryPlaneItem) => void;
 }> = ({ item, index, total, smoothProgress, springVelocity, onSelect }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   // Position along the continuous trajectory
   // Normalized offset based on scroll progress and item index
   const planeOffset = useTransform(smoothProgress, (p: number) => {
@@ -192,7 +190,7 @@ const DiagonalPlaneCard: React.FC<{
   });
 
   // 5. STACKING ORDER & HOVER ELEVATION
-  // Cards closer to center naturally sit higher, but ANY hovered card leaps to zIndex 999!
+  // Cards closer to center naturally sit higher, but ANY hovered card leaps to zIndex 999 via whileHover
   const zIndex = useTransform(planeOffset, (offset: number) => {
     const dist = Math.abs(offset);
     if (dist > 3.8) return 0;
@@ -217,22 +215,20 @@ const DiagonalPlaneCard: React.FC<{
         rotateY,
         rotateZ,
         opacity,
-        zIndex: isHovered ? 999 : zIndex,
+        zIndex,
         pointerEvents,
         marginLeft: '-150px',
         marginTop: '-195px',
       }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
         onSelect(item);
       }}
       whileHover={{
-        scale: 1.08,
+        scale: 1.06,
         zIndex: 999,
-        transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
+        transition: { duration: 0.28, ease: [0.16, 1, 0.3, 1] }
       }}
       whileTap={{ scale: 0.97 }}
     >
@@ -260,17 +256,6 @@ const DiagonalPlaneCard: React.FC<{
           <span className="font-sans text-[10px] sm:text-[11px] font-medium tracking-widest uppercase bg-stone-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 text-white/90">
             {item.year}
           </span>
-        </div>
-
-        {/* Hover Center Indicator */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-          <div 
-            className={`w-12 h-12 rounded-full bg-rose-600 text-white flex items-center justify-center shadow-xl backdrop-blur-md border border-white/30 transition-all duration-300 ${
-              isHovered ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
-            }`}
-          >
-            <ArrowUpRight className="w-5 h-5" />
-          </div>
         </div>
 
         {/* Bottom Metadata & Title */}
@@ -389,26 +374,6 @@ export const VelocityGallerySection: React.FC = () => {
                 onSelect={(selected) => setSelectedItem(selected)}
               />
             ))}
-          </div>
-        </div>
-
-        {/* Bottom Interactive HUD Bar - White Theme */}
-        <div className="relative z-30 w-full max-w-md flex items-center justify-between px-4 py-2 rounded-full bg-white/85 border border-stone-300/80 backdrop-blur-xl text-xs text-stone-700 shadow-md">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
-            <span className="font-mono text-[10px] sm:text-[11px] font-bold tracking-wider text-stone-900">
-              DIAGONAL CASCADE
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2.5">
-            <span className="font-sans text-[10px] sm:text-[11px] text-rose-700 font-semibold">
-              Hover & Click Any Card
-            </span>
-            <span className="text-stone-300">|</span>
-            <span className="font-mono text-[10px] sm:text-[11px] text-stone-600">
-              {galleryPlanes.length} Cards
-            </span>
           </div>
         </div>
 
