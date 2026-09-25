@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { motion, useScroll, useVelocity, useSpring, useTransform } from 'framer-motion';
-import { Sparkles, ArrowUpRight, X, ExternalLink } from 'lucide-react';
+import { Sparkles, ArrowUpRight, X } from 'lucide-react';
 
 interface GalleryPlaneItem {
   id: number;
@@ -124,7 +124,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
 ];
 
 // Single 3D Plane Card
-// Silky smooth 60/120fps GPU motion, original dramatic 3D tilt, reduced gap, and 100% clickable anywhere on the viewport
+// Botanical Editorial White Theme + 100% Hoverable & Clickable across all viewport cards
 const DiagonalPlaneCard: React.FC<{
   item: GalleryPlaneItem;
   index: number;
@@ -143,27 +143,26 @@ const DiagonalPlaneCard: React.FC<{
     return (p - itemCenter) * (total * 0.9);
   });
 
-  // 1. REDUCED GAP: Tighter, elegant diagonal cascade (225px X, -135px Y)
-  // Cards cascade gracefully with a rhythmic, cohesive gap
+  // 1. REDUCED GAP: Tighter, elegant diagonal cascade (220px X, -130px Y)
   const x = useTransform(planeOffset, (offset: number) => {
-    return offset * 225; // Tighter pitch for smooth, connected flow
+    return offset * 220; // Tighter pitch for continuous rhythmic flow
   });
 
   const y = useTransform([planeOffset, springVelocity], ([offset, vel]: [number, number]) => {
-    const diagonalY = -offset * 135; // Bottom-to-top diagonal ascent with comfortable angle
-    const wave = Math.sin((offset * 2.2) + (index * 0.4)) * Math.min(110, Math.max(-110, vel * 65));
+    const diagonalY = -offset * 130; // Diagonal ascent: bottom to top
+    const wave = Math.sin((offset * 2.2) + (index * 0.4)) * Math.min(100, Math.max(-100, vel * 60));
     return diagonalY + wave;
   });
 
-  // 2. DEPTH FALLOFF (Restored depth with velocity wave undulation)
+  // 2. DEPTH: Gentle falloff without burying outer cards so EVERY card remains easily hovered
   const z = useTransform([planeOffset, springVelocity], ([offset, vel]: [number, number]) => {
     const dist = Math.abs(offset);
-    const baseDepth = 25 - Math.pow(dist, 1.25) * 115;
-    const waveDepth = Math.cos((offset * 2.2) + (index * 0.4)) * Math.min(140, Math.max(-140, vel * 75));
+    const baseDepth = -dist * 18; // Very gentle depth so cards don't get trapped behind
+    const waveDepth = Math.cos((offset * 2.2) + (index * 0.4)) * Math.min(60, Math.max(-60, vel * 40));
     return baseDepth + waveDepth;
   });
 
-  // 3. RESTORED 3D PERSPECTIVE TILT (Exact dramatic isometric angles requested)
+  // 3. DRAMATIC 3D PERSPECTIVE TILT (Original isometric angles)
   // Pitch (rotateX)
   const rotateX = useTransform(springVelocity, (vel: number) => {
     const tilt = Math.min(16, Math.max(-16, vel * 10));
@@ -184,7 +183,7 @@ const DiagonalPlaneCard: React.FC<{
     return basePitch + wavePitch;
   });
 
-  // 4. OPACITY (Smooth fade at periphery)
+  // 4. OPACITY (Soft fade at outer periphery)
   const opacity = useTransform(planeOffset, (offset: number) => {
     const dist = Math.abs(offset);
     if (dist > 4.2) return 0;
@@ -192,11 +191,12 @@ const DiagonalPlaneCard: React.FC<{
     return 1;
   });
 
-  // 5. CLICKABILITY & STACKING (Direct MotionValues - ZERO React re-renders for max FPS)
+  // 5. STACKING ORDER & HOVER ELEVATION
+  // Cards closer to center naturally sit higher, but ANY hovered card leaps to zIndex 999!
   const zIndex = useTransform(planeOffset, (offset: number) => {
     const dist = Math.abs(offset);
     if (dist > 3.8) return 0;
-    return Math.max(1, Math.round(90 - dist * 10));
+    return Math.max(1, Math.round(80 - dist * 10));
   });
 
   const pointerEvents = useTransform(planeOffset, (offset: number) => {
@@ -217,11 +217,10 @@ const DiagonalPlaneCard: React.FC<{
         rotateY,
         rotateZ,
         opacity,
-        zIndex,
+        zIndex: isHovered ? 999 : zIndex,
         pointerEvents,
         marginLeft: '-150px',
         marginTop: '-195px',
-        transformStyle: 'preserve-3d',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -232,32 +231,33 @@ const DiagonalPlaneCard: React.FC<{
       }}
       whileHover={{
         scale: 1.08,
-        translateZ: 75,
-        transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] }
+        zIndex: 999,
+        transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
       }}
       whileTap={{ scale: 0.97 }}
     >
-      {/* 3D Plane Card Shell */}
-      <div className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden bg-[#181715] shadow-[0_20px_45px_-10px_rgba(0,0,0,0.85)] border border-white/20 transition-all duration-300 hover:border-amber-400/80 hover:shadow-[0_30px_60px_-10px_rgba(234,88,12,0.45)] group">
+      {/* 3D Plane Card Shell - Botanical Editorial White Theme */}
+      <div 
+        className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-[0_20px_45px_-10px_rgba(28,25,23,0.18)] border border-stone-200/90 transition-all duration-300 hover:border-rose-500 hover:shadow-[0_30px_60px_-10px_rgba(225,29,72,0.3)] group cursor-pointer"
+      >
         
         {/* Artwork Image */}
         <img
           src={item.image}
           alt={item.title}
           draggable={false}
-          className="w-full h-full object-cover filter contrast-[106%] transition-transform duration-500 ease-out group-hover:scale-106 pointer-events-none"
+          className="w-full h-full object-cover filter contrast-[104%] transition-transform duration-500 ease-out group-hover:scale-106 pointer-events-none"
         />
 
-        {/* Ambient Vignettes */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/15 pointer-events-none" />
-        <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/35 pointer-events-none" />
+        {/* Ambient Dark Bottom Vignette so Title & Category are Always Ultra-Readable */}
+        <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-transparent pointer-events-none" />
 
         {/* Top Header Row: Index & Year */}
         <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between text-white pointer-events-none z-10">
-          <span className="font-mono text-[11px] sm:text-xs font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-black/65 backdrop-blur-md border border-white/15 text-amber-300 shadow-xs">
+          <span className="font-mono text-[11px] sm:text-xs font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-stone-900/80 backdrop-blur-md border border-white/20 text-amber-300 shadow-sm">
             {String(item.id).padStart(2, '0')}
           </span>
-          <span className="font-sans text-[10px] sm:text-[11px] font-medium tracking-widest uppercase bg-black/50 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 text-white/80">
+          <span className="font-sans text-[10px] sm:text-[11px] font-medium tracking-widest uppercase bg-stone-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 text-white/90">
             {item.year}
           </span>
         </div>
@@ -276,11 +276,11 @@ const DiagonalPlaneCard: React.FC<{
         {/* Bottom Metadata & Title */}
         <div className="absolute bottom-3.5 sm:bottom-4 left-3.5 sm:left-4 right-3.5 sm:right-4 z-10 pointer-events-none">
           <div className="flex items-center gap-1.5 mb-1">
-            <span className="inline-block text-[10px] font-sans font-bold tracking-widest uppercase text-amber-300/95">
+            <span className="inline-block text-[10px] font-sans font-bold tracking-widest uppercase text-amber-300">
               {item.category}
             </span>
             <span className="text-white/40 text-xs">•</span>
-            <span className="text-[10px] font-sans text-white/70 tracking-wide truncate">
+            <span className="text-[10px] font-sans text-white/80 tracking-wide truncate">
               {item.client}
             </span>
           </div>
@@ -297,7 +297,7 @@ const DiagonalPlaneCard: React.FC<{
         </div>
 
         {/* 3D Border Glow */}
-        <div className="absolute inset-0 rounded-2xl sm:rounded-3xl border border-white/10 group-hover:border-white/35 pointer-events-none transition-colors duration-300" />
+        <div className="absolute inset-0 rounded-2xl sm:rounded-3xl border border-white/20 group-hover:border-rose-400/50 pointer-events-none transition-colors duration-300" />
       </div>
     </motion.div>
   );
@@ -307,7 +307,7 @@ export const VelocityGallerySection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedItem, setSelectedItem] = useState<GalleryPlaneItem | null>(null);
 
-  // Track scroll progress across a comfortable, swift runway (reduced height for fast responsiveness)
+  // Track scroll progress across a comfortable runway
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start end', 'end start'],
@@ -318,47 +318,49 @@ export const VelocityGallerySection: React.FC = () => {
 
   // Spring physics for responsive, liquid wave inertia
   const springVelocity = useSpring(scrollVelocity, {
-    damping: 22,
-    stiffness: 150,
+    damping: 24,
+    stiffness: 140,
+    restDelta: 0.001,
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
     damping: 26,
     stiffness: 130,
+    restDelta: 0.001,
   });
 
   return (
     <section 
       id="velocity-gallery"
       ref={containerRef}
-      className="relative h-[160vh] bg-[#0d0c0a] text-[#f5f2eb] overflow-clip"
+      className="relative h-[160vh] bg-[#faf8f5] text-[#1c1917] overflow-clip"
     >
       {/* Sticky 3D Viewport Screen */}
       <div className="sticky top-0 h-screen w-full flex flex-col justify-between items-center overflow-hidden py-6 sm:py-8 px-4 sm:px-8">
         
-        {/* Ambient Dark Cinema Background & Mesh Glow */}
+        {/* Botanical Editorial Ambient Glow & Paper Texture */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/6 left-1/5 w-[500px] h-[500px] rounded-full bg-rose-950/25 blur-[140px]" />
-          <div className="absolute bottom-1/4 right-1/5 w-[500px] h-[500px] rounded-full bg-amber-900/25 blur-[140px]" />
-          <div className="absolute inset-0 bg-[radial-gradient(#ffffff07_1px,transparent_1px)] [background-size:28px_28px] opacity-50" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0d0c0a] via-transparent to-[#0d0c0a] pointer-events-none" />
+          <div className="absolute top-1/6 left-1/5 w-[550px] h-[550px] rounded-full bg-amber-200/35 blur-[140px]" />
+          <div className="absolute bottom-1/4 right-1/5 w-[550px] h-[550px] rounded-full bg-rose-200/30 blur-[140px]" />
+          <div className="absolute inset-0 bg-[radial-gradient(#1c19170e_1px,transparent_1px)] [background-size:24px_24px] opacity-60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#faf8f5] via-transparent to-[#faf8f5] pointer-events-none" />
         </div>
 
         {/* Section Header */}
         <div className="relative z-30 text-center max-w-3xl pt-2">
-          <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-2">
-            <Sparkles className="w-3 h-3 text-amber-400" />
-            <span className="text-[10px] sm:text-[11px] font-mono tracking-widest uppercase text-amber-300">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-900/5 border border-stone-300 text-stone-800 backdrop-blur-md mb-2 shadow-xs">
+            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+            <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-widest uppercase text-stone-800">
               03 / 3D Velocity Carousel
             </span>
           </div>
 
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-black tracking-tight text-white uppercase">
-            Planes in <span className="font-script italic font-normal text-rose-400 capitalize">Velocity</span>
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-black tracking-tight text-stone-900 uppercase">
+            Planes in <span className="font-script italic font-normal text-rose-600 capitalize">Velocity</span>
           </h2>
           
-          <p className="text-xs sm:text-sm text-[#a39f94] font-sans mt-1.5 max-w-lg mx-auto">
-            Horizontal-diagonal 3D flow with velocity wave dynamics. Every card on screen is instantly clickable to inspect.
+          <p className="text-xs sm:text-sm text-stone-600 font-sans mt-1.5 max-w-lg mx-auto">
+            Horizontal-diagonal 3D flow with velocity wave dynamics. Every card on screen is instantly hoverable & clickable to inspect.
           </p>
         </div>
 
@@ -368,15 +370,13 @@ export const VelocityGallerySection: React.FC = () => {
         <div 
           className="relative w-full flex-1 flex items-center justify-center pointer-events-auto my-auto"
           style={{
-            perspective: '1400px',
+            perspective: '1300px',
             perspectiveOrigin: '50% 50%',
           }}
         >
+          {/* Individual 2.5D/3D card layer without shared preserve-3d so CSS zIndex & hover work 100% on every card */}
           <div 
             className="relative w-full h-full flex items-center justify-center pointer-events-auto"
-            style={{
-              transformStyle: 'preserve-3d',
-            }}
           >
             {galleryPlanes.map((item, idx) => (
               <DiagonalPlaneCard
@@ -392,21 +392,21 @@ export const VelocityGallerySection: React.FC = () => {
           </div>
         </div>
 
-        {/* Bottom Interactive HUD Bar */}
-        <div className="relative z-30 w-full max-w-md flex items-center justify-between px-4 py-2 rounded-full bg-white/5 border border-white/15 backdrop-blur-xl text-xs text-[#a39f94]">
+        {/* Bottom Interactive HUD Bar - White Theme */}
+        <div className="relative z-30 w-full max-w-md flex items-center justify-between px-4 py-2 rounded-full bg-white/85 border border-stone-300/80 backdrop-blur-xl text-xs text-stone-700 shadow-md">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
-            <span className="font-mono text-[10px] sm:text-[11px] tracking-wider text-white/90">
+            <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
+            <span className="font-mono text-[10px] sm:text-[11px] font-bold tracking-wider text-stone-900">
               DIAGONAL CASCADE
             </span>
           </div>
 
           <div className="flex items-center gap-2.5">
-            <span className="font-sans text-[10px] sm:text-[11px] text-amber-300 font-medium">
-              Click Any Card to Inspect
+            <span className="font-sans text-[10px] sm:text-[11px] text-rose-700 font-semibold">
+              Hover & Click Any Card
             </span>
-            <span className="text-white/20">|</span>
-            <span className="font-mono text-[10px] sm:text-[11px] text-white/60">
+            <span className="text-stone-300">|</span>
+            <span className="font-mono text-[10px] sm:text-[11px] text-stone-600">
               {galleryPlanes.length} Cards
             </span>
           </div>
@@ -419,76 +419,75 @@ export const VelocityGallerySection: React.FC = () => {
       {/* ============================================================ */}
       {selectedItem && (
         <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-2xl animate-fade-in"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-xl animate-fade-in"
           onClick={() => setSelectedItem(null)}
         >
           <div 
-            className="relative w-full max-w-4xl bg-[#1c1b18] border border-white/20 rounded-3xl overflow-hidden shadow-[0_40px_90px_rgba(0,0,0,0.95)] flex flex-col md:flex-row transform transition-all duration-300"
+            className="relative w-full max-w-4xl bg-[#faf8f5] border border-stone-300 rounded-3xl overflow-hidden shadow-[0_40px_90px_rgba(28,25,23,0.35)] flex flex-col md:flex-row transform transition-all duration-300 text-stone-900"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
             <button
               onClick={() => setSelectedItem(null)}
-              className="absolute top-4 right-4 z-30 p-2.5 rounded-full bg-black/70 text-white/80 hover:text-white hover:bg-black/95 transition-all border border-white/15 cursor-pointer shadow-lg"
+              className="absolute top-4 right-4 z-30 p-2.5 rounded-full bg-white/90 text-stone-800 hover:text-stone-950 hover:bg-white transition-all border border-stone-300 cursor-pointer shadow-md"
               aria-label="Close modal"
             >
               <X className="w-5 h-5" />
             </button>
 
             {/* Left Image View */}
-            <div className="w-full md:w-1/2 aspect-[4/3] md:aspect-auto relative overflow-hidden bg-black/60">
+            <div className="w-full md:w-1/2 aspect-[4/3] md:aspect-auto relative overflow-hidden bg-stone-900">
               <img
                 src={selectedItem.image}
                 alt={selectedItem.title}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none md:hidden" />
             </div>
 
-            {/* Right Information */}
-            <div className="w-full md:w-1/2 p-6 sm:p-10 flex flex-col justify-between bg-gradient-to-b from-[#1c1b18] to-[#141412]">
+            {/* Right Information - White Theme */}
+            <div className="w-full md:w-1/2 p-6 sm:p-10 flex flex-col justify-between bg-gradient-to-b from-[#faf8f5] to-[#f4f0e8]">
               <div>
                 <div className="flex items-center gap-2.5 mb-3">
-                  <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-amber-400/15 text-amber-300 border border-amber-400/30">
+                  <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-amber-500/15 text-amber-800 border border-amber-500/30">
                     {selectedItem.category}
                   </span>
-                  <span className="text-xs text-[#a39f94] font-mono">
+                  <span className="text-xs text-stone-500 font-mono">
                     {selectedItem.year}
                   </span>
-                  <span className="text-white/20">•</span>
-                  <span className="text-xs text-white/70 font-sans">
+                  <span className="text-stone-300">•</span>
+                  <span className="text-xs text-stone-600 font-sans">
                     {selectedItem.client}
                   </span>
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl font-display font-black text-white tracking-tight mt-1">
+                <h3 className="text-2xl sm:text-3xl font-display font-black text-stone-900 tracking-tight mt-1">
                   {selectedItem.title}
                 </h3>
 
-                <p className="text-sm sm:text-base text-[#b8b4a7] font-sans leading-relaxed mt-4">
+                <p className="text-sm sm:text-base text-stone-700 font-sans leading-relaxed mt-4">
                   {selectedItem.description}
                 </p>
 
-                <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-white/10 text-xs">
+                <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-stone-300/80 text-xs">
                   <div>
-                    <span className="text-[#7d796f] block font-mono text-[10px] uppercase">Format</span>
-                    <span className="text-white font-medium">4K ProRes Master</span>
+                    <span className="text-stone-500 block font-mono text-[10px] uppercase">Format</span>
+                    <span className="text-stone-900 font-medium">4K ProRes Master</span>
                   </div>
                   <div>
-                    <span className="text-[#7d796f] block font-mono text-[10px] uppercase">Role</span>
-                    <span className="text-white font-medium">Lead Video Editor</span>
+                    <span className="text-stone-500 block font-mono text-[10px] uppercase">Role</span>
+                    <span className="text-stone-900 font-medium">Lead Video Editor</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-white/10 mt-8 flex items-center justify-between">
-                <span className="text-xs text-[#7d796f] font-mono">
+              <div className="pt-6 border-t border-stone-300/80 mt-8 flex items-center justify-between">
+                <span className="text-xs text-stone-500 font-mono">
                   REF / #VARUN-0{selectedItem.id}
                 </span>
                 <a
                   href="#contact"
                   onClick={() => setSelectedItem(null)}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold tracking-wide transition-all shadow-lg hover:shadow-rose-600/30 cursor-pointer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold tracking-wide transition-all shadow-md cursor-pointer"
                 >
                   <span>Inquire About Project</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
