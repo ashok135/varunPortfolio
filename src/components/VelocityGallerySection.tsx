@@ -148,36 +148,36 @@ const DiagonalPlaneCard: React.FC<{
 
   const y = useTransform([planeOffset, springVelocity], ([offset, vel]: [number, number]) => {
     const diagonalY = -offset * 130; // Diagonal ascent: bottom to top
-    const wave = Math.sin((offset * 2.2) + (index * 0.4)) * Math.min(100, Math.max(-100, vel * 60));
+    const wave = Math.sin(offset * 1.8) * Math.min(50, Math.max(-50, vel * 35));
     return diagonalY + wave;
   });
 
   // 2. DEPTH: Gentle falloff without burying outer cards so EVERY card remains easily hovered
   const z = useTransform([planeOffset, springVelocity], ([offset, vel]: [number, number]) => {
     const dist = Math.abs(offset);
-    const baseDepth = -dist * 18; // Very gentle depth so cards don't get trapped behind
-    const waveDepth = Math.cos((offset * 2.2) + (index * 0.4)) * Math.min(60, Math.max(-60, vel * 40));
+    const baseDepth = -dist * 16;
+    const waveDepth = Math.cos(offset * 1.8) * Math.min(45, Math.max(-45, vel * 30));
     return baseDepth + waveDepth;
   });
 
   // 3. DRAMATIC 3D PERSPECTIVE TILT (Original isometric angles)
   // Pitch (rotateX)
   const rotateX = useTransform(springVelocity, (vel: number) => {
-    const tilt = Math.min(16, Math.max(-16, vel * 10));
+    const tilt = Math.min(12, Math.max(-12, vel * 8));
     return -18 + tilt;
   });
 
   // Yaw (rotateY)
   const rotateY = useTransform([planeOffset, springVelocity], ([offset, vel]: [number, number]) => {
-    const baseRot = -28 + (offset * 2.2);
-    const waveRot = Math.sin(offset * 1.6) * Math.min(12, Math.max(-12, vel * 7));
+    const baseRot = -28 + (offset * 1.8);
+    const waveRot = Math.sin(offset * 1.2) * Math.min(8, Math.max(-8, vel * 5));
     return baseRot + waveRot;
   });
 
   // Roll (rotateZ)
   const rotateZ = useTransform([planeOffset, springVelocity], ([offset, vel]: [number, number]) => {
-    const basePitch = 12 + (offset * 0.6);
-    const wavePitch = Math.cos(offset) * Math.min(6, Math.max(-6, vel * 4));
+    const basePitch = 12 + (offset * 0.5);
+    const wavePitch = Math.cos(offset * 1.2) * Math.min(5, Math.max(-5, vel * 3));
     return basePitch + wavePitch;
   });
 
@@ -190,7 +190,6 @@ const DiagonalPlaneCard: React.FC<{
   });
 
   // 5. STACKING ORDER & HOVER ELEVATION
-  // Cards closer to center naturally sit higher, but ANY hovered card leaps to zIndex 999 via whileHover
   const zIndex = useTransform(planeOffset, (offset: number) => {
     const dist = Math.abs(offset);
     if (dist > 3.8) return 0;
@@ -206,7 +205,7 @@ const DiagonalPlaneCard: React.FC<{
       role="button"
       tabIndex={0}
       aria-label={`Open project: ${item.title}`}
-      className="absolute top-1/2 left-1/2 w-[240px] sm:w-[280px] md:w-[305px] aspect-[3/4] cursor-pointer select-none origin-center rounded-3xl"
+      className="absolute top-1/2 left-1/2 w-[240px] sm:w-[280px] md:w-[305px] aspect-[3/4] cursor-pointer select-none origin-center rounded-3xl will-change-transform"
       style={{
         x,
         y,
@@ -226,15 +225,15 @@ const DiagonalPlaneCard: React.FC<{
         onSelect(item);
       }}
       whileHover={{
-        scale: 1.06,
+        scale: 1.05,
         zIndex: 999,
-        transition: { duration: 0.28, ease: [0.16, 1, 0.3, 1] }
+        transition: { duration: 0.22, ease: "easeOut" }
       }}
-      whileTap={{ scale: 0.97 }}
+      whileTap={{ scale: 0.98 }}
     >
       {/* 3D Plane Card Shell - Botanical Editorial White Theme */}
       <div 
-        className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-[0_20px_45px_-10px_rgba(28,25,23,0.18)] border border-stone-200/90 transition-all duration-300 hover:border-rose-500 hover:shadow-[0_30px_60px_-10px_rgba(225,29,72,0.3)] group cursor-pointer"
+        className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-[0_16px_36px_-10px_rgba(28,25,23,0.18)] border border-stone-200/90 hover:border-rose-400/80 hover:shadow-[0_24px_50px_-10px_rgba(225,29,72,0.25)] transition-all duration-300 group cursor-pointer"
       >
         
         {/* Artwork Image */}
@@ -242,7 +241,7 @@ const DiagonalPlaneCard: React.FC<{
           src={item.image}
           alt={item.title}
           draggable={false}
-          className="w-full h-full object-cover filter contrast-[104%] transition-transform duration-500 ease-out group-hover:scale-106 pointer-events-none"
+          className="w-full h-full object-cover filter contrast-[104%] transition-transform duration-500 ease-out group-hover:scale-105 pointer-events-none"
         />
 
         {/* Ambient Dark Bottom Vignette so Title & Category are Always Ultra-Readable */}
@@ -301,17 +300,19 @@ export const VelocityGallerySection: React.FC = () => {
   // Calculate velocity of scroll
   const scrollVelocity = useVelocity(scrollYProgress);
 
-  // Spring physics for responsive, liquid wave inertia
+  // High-performance critically-damped spring physics for butter-smooth 120fps tracking
   const springVelocity = useSpring(scrollVelocity, {
-    damping: 24,
-    stiffness: 140,
-    restDelta: 0.001,
+    damping: 40,
+    stiffness: 200,
+    mass: 0.15,
+    restDelta: 0.0001,
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    damping: 26,
-    stiffness: 130,
-    restDelta: 0.001,
+    damping: 45,
+    stiffness: 240,
+    mass: 0.15,
+    restDelta: 0.0001,
   });
 
   return (
