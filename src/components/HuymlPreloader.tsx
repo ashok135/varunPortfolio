@@ -178,21 +178,45 @@ export const HuymlPreloader: React.FC<HuymlPreloaderProps> = ({ onComplete }) =>
       }, 880);
     };
 
-    // Smooth Lerp loop driven by real asset loading
+    const MINIMUM_DURATION_MS = 3000; // Minimum 3 seconds loader duration
+    const startTime = performance.now();
+
+    // Smooth Lerp loop driven by real asset loading + minimum 3s pacing
     const renderLoop = () => {
       if (!isMounted) return;
 
-      const targetProgress = targetNormalizedProgress * finalProgress;
-      // Damped spring factor: smooth responsive movement as assets finish
-      const lerpSpeed = targetNormalizedProgress >= 1.0 ? 0.07 : 0.055;
+      const elapsed = performance.now() - startTime;
+      // Pacing curve: ensures the 3-second experience unfolds smoothly (0% -> 30% -> 60% -> 100%)
+      const timeRatio = Math.min(1.0, elapsed / MINIMUM_DURATION_MS);
+
+      // Pacing curve easing: slow down slightly around 30% and 60% like huyml.co
+      let easedTimeRatio: number;
+      if (timeRatio < 0.3) {
+        easedTimeRatio = (timeRatio / 0.3) * 0.3;
+      } else if (timeRatio < 0.6) {
+        easedTimeRatio = 0.3 + ((timeRatio - 0.3) / 0.3) * 0.3;
+      } else {
+        const t = (timeRatio - 0.6) / 0.4;
+        easedTimeRatio = 0.6 + (t * t * (3 - 2 * t)) * 0.4;
+      }
+
+      // The loader progresses as real assets download, but is smoothly paced to take at least 3 seconds
+      const combinedRatio = Math.min(easedTimeRatio, targetNormalizedProgress);
+      const targetProgress = combinedRatio * finalProgress;
+
+      // Damped spring interpolation
+      const lerpSpeed = 0.085;
       currentProgress += (targetProgress - currentProgress) * lerpSpeed;
 
       updateVisuals(currentProgress);
 
-      // Check if finished
-      if (targetNormalizedProgress >= 1.0 && currentProgress >= finalProgress - 0.015) {
+      const isTimeComplete = elapsed >= MINIMUM_DURATION_MS;
+      const isAssetsComplete = targetNormalizedProgress >= 1.0;
+
+      // Complete only when both assets are loaded AND minimum 3 seconds have elapsed
+      if (isTimeComplete && isAssetsComplete && currentProgress >= finalProgress - 0.02) {
         updateVisuals(finalProgress);
-        setTimeout(triggerExit, 240);
+        setTimeout(triggerExit, 260);
       } else {
         animFrameId = requestAnimationFrame(renderLoop);
       }
