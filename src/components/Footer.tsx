@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="py-12 px-6 sm:px-8 bg-[#ede8dd] border-t border-[#dfd8c7] text-[#706c62] text-xs font-mono">
-      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
         
         <div>
           <span className="font-display font-extrabold text-sm text-[#1c1b18] tracking-tight block">
@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
           </span>
         </div>
 
-        <div className="flex items-center gap-6 text-[11px]">
+        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-6 text-[11px]">
           <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-[#1c1b18] transition-colors">
             INSTAGRAM
           </a>

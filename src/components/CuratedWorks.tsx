@@ -179,16 +179,16 @@ export const CuratedWorks: React.FC<CuratedWorksProps> = ({
               </div>
 
               {/* Text Info */}
-              <div className="pt-4 flex items-baseline justify-between border-b border-[#dfd8c7] pb-3">
+              <div className="pt-4 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4 border-b border-[#dfd8c7] pb-3">
                 <div>
-                  <h3 className="font-serif italic font-normal text-2xl text-[#1c1b18] group-hover:text-[#4a473f] transition-colors">
+                  <h3 className="font-serif italic font-normal text-xl sm:text-2xl text-[#1c1b18] group-hover:text-[#4a473f] transition-colors leading-snug">
                     {project.title}
                   </h3>
                   <p className="font-sans text-xs text-[#706c62] mt-1">
                     {project.subtitle}
                   </p>
                 </div>
-                <span className="font-mono text-xs text-[#8c877b] ml-4">
+                <span className="font-mono text-xs text-[#8c877b] sm:ml-4 shrink-0">
                   {project.year}
                 </span>
               </div>
@@ -203,7 +203,7 @@ export const CuratedWorks: React.FC<CuratedWorksProps> = ({
             onClick={() => setSelectedProject(null)}
           >
             <div 
-              className="bg-[#f5f2eb] border border-[#dfd8c7] rounded-xl max-w-2xl w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+              className="bg-[#f5f2eb] border border-[#dfd8c7] rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-in fade-in zoom-in-95 duration-200"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="relative aspect-[16/9] bg-[#ede8dd] overflow-hidden">

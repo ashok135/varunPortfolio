@@ -3,7 +3,6 @@ import Lenis from 'lenis';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { EditorialProfileSection } from './components/EditorialProfileSection';
-import { CinematicShowreel } from './components/CinematicShowreel';
 import { VelocityGallerySection } from './components/VelocityGallerySection';
 import { CuratedWorks } from './components/CuratedWorks';
 import { ExperienceJournal } from './components/ExperienceJournal';
@@ -116,7 +115,6 @@ export const App: React.FC = () => {
           onHeroFinishChange={setIsHeroFinished}
         />
         <EditorialProfileSection />
-        <CinematicShowreel />
         <VelocityGallerySection />
         <CuratedWorks 
           activeCategory={selectedCategory}

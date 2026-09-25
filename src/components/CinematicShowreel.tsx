@@ -1,5 +1,9 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { Play, Pause, RotateCcw, Volume2, VolumeX, Maximize2, SkipBack, SkipForward, Sliders, Film, Layers, Monitor } from 'lucide-react';
+import React, { useRef, useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Play, Pause, RotateCcw, Volume2, VolumeX, SkipBack, SkipForward, 
+  Smartphone, Scissors, Zap, Sparkles, GripVertical, X, Check 
+} from 'lucide-react';
 
 interface Scene {
   id: number;
@@ -15,6 +19,7 @@ interface Scene {
 
 export const CinematicShowreel: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const monitorContainerRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number | null>(null);
 
   // Playback state
@@ -24,6 +29,13 @@ export const CinematicShowreel: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'timeline' | 'grade' | 'specs'>('timeline');
   const [splitPosition, setSplitPosition] = useState<number>(50); // Color grade split wipe (0 - 100%)
   const [currentSceneIdx, setCurrentSceneIdx] = useState<number>(0);
+
+  // Perplexity Comet-style Draggable 9:16 Vertical Video Editor Companion
+  const [isPhoneReframeOpen, setIsPhoneReframeOpen] = useState<boolean>(true);
+  const [phoneLutEnabled, setPhoneLutEnabled] = useState<boolean>(true);
+  const [phoneSpeedMultiplier, setPhoneSpeedMultiplier] = useState<number>(1.0);
+  const [isRazorCutFlashed, setIsRazorCutFlashed] = useState<boolean>(false);
+  const [showAssistantBubble, setShowAssistantBubble] = useState<boolean>(true);
 
   const totalDuration = 24.0; // 24 seconds total showreel
   const fps = 24;
@@ -285,10 +297,10 @@ export const CinematicShowreel: React.FC = () => {
           </div>
 
           {/* Suite Mode Tabs */}
-          <div className="scroll-reveal-right flex items-center gap-1.5 bg-[#1c1b18] p-1 rounded-lg border border-[#2a2924]">
+          <div className="scroll-reveal-right flex items-center gap-1 sm:gap-1.5 bg-[#1c1b18] p-1 rounded-lg border border-[#2a2924] overflow-x-auto max-w-full">
             <button
               onClick={() => setActiveTab('timeline')}
-              className={`px-3 py-1.5 rounded text-xs font-mono transition-colors ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded text-[11px] sm:text-xs font-mono transition-colors whitespace-nowrap ${
                 activeTab === 'timeline' ? 'bg-[#f5f2eb] text-[#1c1b18] font-bold' : 'text-[#8c877b] hover:text-[#f5f2eb]'
               }`}
             >
@@ -296,7 +308,7 @@ export const CinematicShowreel: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab('grade')}
-              className={`px-3 py-1.5 rounded text-xs font-mono transition-colors ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded text-[11px] sm:text-xs font-mono transition-colors whitespace-nowrap ${
                 activeTab === 'grade' ? 'bg-[#f5f2eb] text-[#1c1b18] font-bold' : 'text-[#8c877b] hover:text-[#f5f2eb]'
               }`}
             >
@@ -304,7 +316,7 @@ export const CinematicShowreel: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab('specs')}
-              className={`px-3 py-1.5 rounded text-xs font-mono transition-colors ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded text-[11px] sm:text-xs font-mono transition-colors whitespace-nowrap ${
                 activeTab === 'specs' ? 'bg-[#f5f2eb] text-[#1c1b18] font-bold' : 'text-[#8c877b] hover:text-[#f5f2eb]'
               }`}
             >
@@ -319,12 +331,14 @@ export const CinematicShowreel: React.FC = () => {
         <div className="scroll-reveal bg-[#0d0d0b] rounded-2xl border-2 border-[#262521] overflow-hidden shadow-2xl relative">
           
           {/* Top Titlebar */}
-          <div className="bg-[#181816] px-4 py-2.5 border-b border-[#262521] flex items-center justify-between text-xs font-mono text-[#8c877b]">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-600 inline-block" />
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" />
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
-              <span className="ml-2 font-bold text-[#e5e5e0]">PROGRAM: VARUN_P_MASTER_REEL_2026.mov</span>
+          <div className="bg-[#181816] px-3 sm:px-4 py-2 sm:py-2.5 border-b border-[#262521] flex items-center justify-between text-xs font-mono text-[#8c877b]">
+            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-600 inline-block shrink-0" />
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block shrink-0" />
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block shrink-0" />
+              <span className="ml-1 sm:ml-2 font-bold text-[#e5e5e0] truncate text-[11px] sm:text-xs">
+                PROGRAM: VARUN_P_MASTER_REEL_2026.mov
+              </span>
             </div>
             <div className="hidden sm:flex items-center gap-4">
               <span className="text-emerald-400">FPS: 24.00 (Sync)</span>
@@ -332,8 +346,11 @@ export const CinematicShowreel: React.FC = () => {
             </div>
           </div>
 
-          {/* Canvas Display */}
-          <div className="relative aspect-[16/9] w-full bg-black flex items-center justify-center overflow-hidden">
+          {/* Canvas Display with Draggable 9:16 Reframe Companion */}
+          <div 
+            ref={monitorContainerRef}
+            className="relative aspect-[16/9] min-h-[300px] sm:min-h-[440px] md:min-h-[520px] w-full bg-black flex items-center justify-center overflow-hidden"
+          >
             <canvas
               ref={canvasRef}
               width={960}
@@ -342,9 +359,192 @@ export const CinematicShowreel: React.FC = () => {
               onClick={togglePlay}
             />
 
+            {/* ============================================================ */}
+            {/* PERPLEXITY COMET-STYLE DRAGGABLE 9:16 SOCIAL REFRAME MONITOR */}
+            {/* ============================================================ */}
+            <AnimatePresence>
+              {isPhoneReframeOpen && (
+                <motion.div
+                  drag
+                  dragConstraints={monitorContainerRef}
+                  dragElastic={0.1}
+                  dragMomentum={true}
+                  whileDrag={{ scale: 1.04, cursor: 'grabbing', zIndex: 60 }}
+                  initial={{ x: 15, y: -10, opacity: 0, scale: 0.95 }}
+                  animate={{ x: 15, y: -10, opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+                  className="absolute top-6 left-3 sm:top-8 sm:left-8 z-40 cursor-grab touch-none select-none flex items-start gap-2 sm:gap-3"
+                >
+                  {/* 1. Left Vertical Action Pills (Floating, Comet-style) */}
+                  <div className="flex flex-col gap-1.5 sm:gap-2 pt-6 sm:pt-10">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsRazorCutFlashed(true);
+                        setTimeout(() => setIsRazorCutFlashed(false), 500);
+                      }}
+                      className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-mono font-medium backdrop-blur-md transition-all shadow-lg border ${
+                        isRazorCutFlashed 
+                          ? 'bg-red-500 text-white border-red-400 scale-105'
+                          : 'bg-[#181816]/90 text-[#f5f2eb] border-[#383732] hover:bg-[#282723]'
+                      }`}
+                      title="Trigger Smart Cut"
+                    >
+                      <Scissors className="w-3 h-3 text-red-400" />
+                      <span className="hidden min-[480px]:inline">Smart Cut</span>
+                    </button>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPhoneLutEnabled(!phoneLutEnabled);
+                      }}
+                      className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-mono font-medium backdrop-blur-md transition-all shadow-lg border ${
+                        phoneLutEnabled 
+                          ? 'bg-amber-500/20 text-amber-300 border-amber-500/60 shadow-amber-500/20'
+                          : 'bg-[#181816]/90 text-[#8c877b] border-[#383732] hover:bg-[#282723]'
+                      }`}
+                      title="Toggle Kodak 2383 LUT"
+                    >
+                      <Sparkles className="w-3 h-3 text-amber-400" />
+                      <span className="hidden min-[480px]:inline">LUT 2383</span>
+                    </button>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPhoneSpeedMultiplier(prev => prev === 1 ? 2 : prev === 2 ? 0.5 : 1);
+                      }}
+                      className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-mono font-medium bg-[#181816]/90 text-[#f5f2eb] border border-[#383732] hover:bg-[#282723] backdrop-blur-md shadow-lg transition-all"
+                      title="Speed Ramp Multiplier"
+                    >
+                      <Zap className="w-3 h-3 text-yellow-400" />
+                      <span>{phoneSpeedMultiplier}x</span>
+                    </button>
+                  </div>
+
+                  {/* 2. Main 9:16 Vertical Phone Chassis */}
+                  <div className="relative w-[120px] min-[400px]:w-[145px] sm:w-[185px] md:w-[215px] aspect-[9/16] rounded-[22px] sm:rounded-[30px] p-2 sm:p-2.5 bg-gradient-to-b from-[#2a2925] via-[#1a1917] to-[#12110f] border-2 border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.08)] backdrop-blur-xl overflow-hidden group">
+                    
+                    {/* Top Drag Indicator & Dynamic Island */}
+                    <div className="absolute top-1.5 sm:top-2 left-0 right-0 z-30 flex items-center justify-between px-2.5 sm:px-3">
+                      <div className="flex items-center gap-1 text-[8px] font-mono text-[#8c877b]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping inline-block" />
+                        <span className="text-white font-bold">9:16</span>
+                      </div>
+
+                      {/* Dynamic Island Notch */}
+                      <div className="w-10 sm:w-14 h-3 bg-black rounded-full border border-white/10 flex items-center justify-center">
+                        <span className="w-1 h-1 rounded-full bg-blue-500/80 mr-1" />
+                        <span className="text-[7px] font-mono text-[#706c62]">{formatTimecode(currentTime).slice(3)}</span>
+                      </div>
+
+                      <div className="flex items-center gap-1">
+                        <GripVertical className="w-3 h-3 text-[#a69e8b] cursor-grab active:cursor-grabbing" />
+                      </div>
+                    </div>
+
+                    {/* Screen Display Area */}
+                    <div className="relative w-full h-full rounded-[16px] sm:rounded-[22px] overflow-hidden bg-black border border-white/10 shadow-inner">
+                      
+                      {/* Active scene image with vertical zoom and Ken Burns pan */}
+                      <img
+                        src={scenes[currentSceneIdx]?.image || '/portfolio/banner_3d_motion.jpg'}
+                        alt="9:16 Mobile Reframe Preview"
+                        className="w-full h-full object-cover transition-all duration-300 filter contrast-[108%]"
+                        style={{
+                          filter: phoneLutEnabled ? 'contrast(115%) saturate(125%)' : 'grayscale(10%) contrast(98%)',
+                          transform: `scale(${1.35 + (currentTime % 6) * 0.03})`,
+                        }}
+                      />
+
+                      {/* Razor Cut Flash Effect */}
+                      {isRazorCutFlashed && (
+                        <div className="absolute inset-0 bg-white/70 pointer-events-none animate-in fade-in duration-100" />
+                      )}
+
+                      {/* Golden Ratio Grid Lines */}
+                      <div className="absolute inset-0 grid grid-cols-3 grid-rows-3 pointer-events-none opacity-25">
+                        <div className="border-r border-b border-white/50" />
+                        <div className="border-r border-b border-white/50" />
+                        <div className="border-b border-white/50" />
+                        <div className="border-r border-b border-white/50" />
+                        <div className="border-r border-b border-white/50" />
+                        <div className="border-b border-white/50" />
+                        <div className="border-r border-white/50" />
+                        <div className="border-r border-white/50" />
+                        <div />
+                      </div>
+
+                      {/* Bottom HUD: Live Audio & Retention readout */}
+                      <div className="absolute bottom-2 left-2 right-2 z-20 bg-black/75 backdrop-blur-md rounded-lg p-1.5 border border-white/10 flex items-center justify-between text-[8px] sm:text-[9px] font-mono text-[#f5f2eb]">
+                        <div className="flex items-center gap-1">
+                          <span className="text-emerald-400 font-bold">RET: 94%</span>
+                          <span className="text-[#706c62] hidden sm:inline">•</span>
+                          <span className="text-amber-300 hidden sm:inline">REFRAME</span>
+                        </div>
+                        <div className="flex items-end gap-0.5 h-2.5">
+                          {[4, 8, 12, 6, 10, 8].map((bh, bi) => (
+                            <span 
+                              key={bi} 
+                              className="w-0.5 bg-emerald-400 rounded-full" 
+                              style={{ height: `${bh}px` }} 
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Drag Handle Label Badge */}
+                      <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none opacity-80 group-hover:opacity-100 transition-opacity">
+                        <span className="px-2 py-0.5 rounded-full bg-black/60 border border-white/20 text-[7px] sm:text-[8px] font-mono text-[#dcd7cb] whitespace-nowrap shadow-sm">
+                          DRAG ANYWHERE
+                        </span>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  {/* 3. Floating AI Assistant Bubble (Comet-style) */}
+                  {showAssistantBubble && (
+                    <motion.div
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="hidden md:flex flex-col max-w-[190px] p-3 rounded-2xl bg-[#1c1b18]/90 backdrop-blur-md border border-[#383732] shadow-2xl text-[#f5f2eb] mt-6"
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <div className="flex items-center gap-1.5 font-mono text-[10px] text-amber-400 font-bold">
+                          <Sparkles className="w-3 h-3 text-amber-400" />
+                          <span>NLE ASSISTANT</span>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowAssistantBubble(false);
+                          }}
+                          className="text-[#8c877b] hover:text-white"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                      <p className="text-[10px] font-sans text-[#c5bca7] leading-relaxed">
+                        Reframing 4K master timeline to 9:16 viral vertical reel with audio beat-detection lock.
+                      </p>
+                      <div className="mt-2 pt-1.5 border-t border-white/10 flex items-center justify-between text-[9px] font-mono text-emerald-400">
+                        <span>READY TO EXPORT</span>
+                        <Check className="w-3 h-3" />
+                      </div>
+                    </motion.div>
+                  )}
+
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {/* Floating Color Grade Split Slider (Visible when activeTab === 'grade') */}
             {activeTab === 'grade' && (
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md px-4 py-2 rounded-full border border-neutral-700 flex items-center gap-3 text-xs font-mono text-white">
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md px-4 py-2 rounded-full border border-neutral-700 flex items-center gap-3 text-xs font-mono text-white z-30">
                 <span>LOG</span>
                 <input
                   type="range"
@@ -403,7 +603,20 @@ export const CinematicShowreel: React.FC = () => {
             </div>
 
             {/* Right Tools */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <button
+                onClick={() => setIsPhoneReframeOpen(!isPhoneReframeOpen)}
+                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-lg border text-[11px] font-mono transition-all ${
+                  isPhoneReframeOpen 
+                    ? 'bg-amber-500/15 border-amber-500/50 text-amber-300' 
+                    : 'bg-[#22221f] border-[#2c2b27] text-[#8c877b] hover:text-white'
+                }`}
+                title="Toggle 9:16 Draggable Reframe Monitor"
+              >
+                <Smartphone className="w-3.5 h-3.5" />
+                <span className="hidden min-[480px]:inline">9:16 Reframe</span>
+              </button>
+
               <button
                 onClick={() => setVolume(!volume)}
                 className="text-[#8c877b] hover:text-white transition-colors"
@@ -411,7 +624,7 @@ export const CinematicShowreel: React.FC = () => {
               >
                 {volume ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4 text-red-400" />}
               </button>
-              <div className="font-mono text-xs text-[#8c877b] hidden sm:block">
+              <div className="font-mono text-xs text-[#8c877b] hidden md:block">
                 TOTAL: 00:00:24:00
               </div>
             </div>

@@ -372,25 +372,46 @@ export const EditorialProfileSection: React.FC = () => {
               Cutting footage isn't mere assembly—it is <strong className="text-[#1c1b18] font-bold">sculpting human emotion through micro-frame rhythm</strong>. Over 3+ years, I have shaped raw rushes into high-retention commercial stories, broadcast television segments, and viral narrative videos.
             </p>
 
-            {/* Live Audio Equalizer Waveform */}
-            <div className="w-full max-w-xl bg-[#ede8dd] p-4 rounded-xl border border-[#dfd8c7] flex items-center justify-between shadow-xs">
-              <div className="flex items-center gap-2.5">
-                <Volume2 className="w-4 h-4 text-[#1c1b18]" />
-                <span className="font-mono text-xs text-[#4a473f]">
+            {/* Live Audio Equalizer Waveform (Styled exactly like pro audio meters in user photo) */}
+            <div className="w-full max-w-xl bg-[#ede8dd] p-3 sm:p-4 rounded-xl border border-[#dfd8c7] flex items-center justify-between shadow-xs">
+              <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                <Volume2 className="w-4 h-4 text-[#1c1b18] shrink-0" />
+                <span className="font-mono text-[11px] sm:text-xs text-[#4a473f] truncate">
                   <strong className="text-[#1c1b18]">SONIC SYNCHRONIZATION</strong> • Audio-Driven Cut Points
                 </span>
               </div>
 
-              {/* Animated audio bars in rich ink tones */}
-              <div className="flex items-end gap-1 h-5">
-                {[6, 16, 10, 20, 14, 22, 12, 18, 8, 20, 15, 10].map((h, i) => (
+              {/* Pro Audio VU Meter Pocket (Dark background with glowing green bars & red peaks matching photo) */}
+              <div className="bg-[#0e0e0c] px-2.5 py-1.5 rounded-lg border border-[#24231f] flex items-end gap-[3px] h-7 shadow-inner shrink-0 ml-2">
+                {[
+                  { h: 16, isPeak: false },
+                  { h: 14, isPeak: false },
+                  { h: 9, isPeak: false },
+                  { h: 5, isPeak: false },
+                  { h: 5, isPeak: false },
+                  { h: 11, isPeak: false },
+                  { h: 16, isPeak: false },
+                  { h: 16, isPeak: false },
+                  { h: 10, isPeak: false },
+                  { h: 6, isPeak: false },
+                  { h: 6, isPeak: false },
+                  { h: 9, isPeak: false },
+                  { h: 14, isPeak: false },
+                  { h: 17, isPeak: true },
+                  { h: 13, isPeak: true },
+                  { h: 8, isPeak: true },
+                ].map((bar, i) => (
                   <span
                     key={i}
-                    className="w-1 bg-[#1c1b18] rounded-full animate-pulse"
+                    className={`w-[3px] rounded-xs transition-all duration-150 animate-pulse ${
+                      bar.isPeak
+                        ? 'bg-[#ef4444] shadow-[0_0_6px_rgba(239,68,68,0.7)]'
+                        : 'bg-[#22c55e] shadow-[0_0_6px_rgba(34,197,94,0.6)]'
+                    }`}
                     style={{
-                      height: `${h}px`,
-                      animationDelay: `${i * 0.08}s`,
-                      animationDuration: '0.9s',
+                      height: `${bar.h}px`,
+                      animationDelay: `${(i % 5) * 0.12}s`,
+                      animationDuration: '0.85s',
                     }}
                   />
                 ))}
@@ -398,38 +419,38 @@ export const EditorialProfileSection: React.FC = () => {
             </div>
 
             {/* Directorial Credentials Cards */}
-            <div className="grid grid-cols-3 gap-3 w-full max-w-xl font-mono text-xs">
-              <div className="p-3.5 rounded-xl bg-[#ede8dd] border border-[#dfd8c7] shadow-xs">
-                <div className="text-[#1c1b18] font-bold text-base">3+ YEARS</div>
-                <div className="text-[#706c62] text-[10px] mt-0.5">Post-Production</div>
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full max-w-xl font-mono text-xs">
+              <div className="p-2.5 sm:p-3.5 rounded-xl bg-[#ede8dd] border border-[#dfd8c7] shadow-xs text-center sm:text-left">
+                <div className="text-[#1c1b18] font-bold text-sm sm:text-base">3+ YEARS</div>
+                <div className="text-[#706c62] text-[9px] sm:text-[10px] mt-0.5 truncate">Post-Production</div>
               </div>
-              <div className="p-3.5 rounded-xl bg-[#ede8dd] border border-[#dfd8c7] shadow-xs">
-                <div className="text-emerald-800 font-bold text-base">100+ CUTS</div>
-                <div className="text-[#706c62] text-[10px] mt-0.5">Timeline Exports</div>
+              <div className="p-2.5 sm:p-3.5 rounded-xl bg-[#ede8dd] border border-[#dfd8c7] shadow-xs text-center sm:text-left">
+                <div className="text-emerald-800 font-bold text-sm sm:text-base">100+ CUTS</div>
+                <div className="text-[#706c62] text-[9px] sm:text-[10px] mt-0.5 truncate">Timeline Exports</div>
               </div>
-              <div className="p-3.5 rounded-xl bg-[#ede8dd] border border-[#dfd8c7] shadow-xs">
-                <div className="text-amber-900 font-bold text-base">ACES / LOG</div>
-                <div className="text-[#706c62] text-[10px] mt-0.5">Color Pipeline</div>
+              <div className="p-2.5 sm:p-3.5 rounded-xl bg-[#ede8dd] border border-[#dfd8c7] shadow-xs text-center sm:text-left">
+                <div className="text-amber-900 font-bold text-sm sm:text-base">ACES / LOG</div>
+                <div className="text-[#706c62] text-[9px] sm:text-[10px] mt-0.5 truncate">Color Pipeline</div>
               </div>
             </div>
 
             {/* Clean Direct Contact Row */}
-            <div className="flex flex-wrap items-center gap-4 pt-1">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-1 max-w-full">
               <button
                 onClick={handleCopyEmail}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#1c1b18] hover:bg-[#33322d] text-[#f5f2eb] transition-all cursor-pointer text-xs font-mono shadow-xs"
+                className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-[#1c1b18] hover:bg-[#33322d] text-[#f5f2eb] transition-all cursor-pointer text-[11px] sm:text-xs font-mono shadow-xs max-w-full"
                 title="Copy Email"
               >
-                <Mail className="w-3.5 h-3.5 text-amber-300" />
-                <span>varunp.creates@gmail.com</span>
+                <Mail className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+                <span className="truncate">varunp.creates@gmail.com</span>
                 {copiedEmail ? (
-                  <Check className="w-3.5 h-3.5 text-emerald-400 ml-1" />
+                  <Check className="w-3.5 h-3.5 text-emerald-400 ml-1 shrink-0" />
                 ) : (
-                  <Copy className="w-3.5 h-3.5 text-[#a69e8b] ml-1" />
+                  <Copy className="w-3.5 h-3.5 text-[#a69e8b] ml-1 shrink-0" />
                 )}
               </button>
               <div className="flex items-center gap-1.5 text-xs font-mono text-[#706c62]">
-                <MapPin className="w-3.5 h-3.5 text-[#1c1b18]" />
+                <MapPin className="w-3.5 h-3.5 text-[#1c1b18] shrink-0" />
                 <span>Hyderabad, India</span>
               </div>
             </div>
@@ -437,11 +458,11 @@ export const EditorialProfileSection: React.FC = () => {
           </div>
 
           {/* RIGHT 5 COLS: 3D SCROLL-DRIVEN 35MM FILM CELL */}
-          <div className="scroll-reveal-right lg:col-span-5 flex flex-col items-center">
+          <div className="scroll-reveal-right lg:col-span-5 flex flex-col items-center w-full">
             
             {/* 3D Perspective Wrapper */}
             <div 
-              className="w-full max-w-[380px] sm:max-w-[420px] bg-[#ede8dd] rounded-2xl border-2 border-[#1c1b18] shadow-2xl p-3 relative cursor-crosshair transition-transform duration-150"
+              className="w-full max-w-full sm:max-w-[420px] bg-[#ede8dd] rounded-2xl border-2 border-[#1c1b18] shadow-2xl p-2.5 sm:p-3 relative cursor-crosshair transition-transform duration-150"
               style={{
                 perspective: '1200px',
                 transformStyle: 'preserve-3d',

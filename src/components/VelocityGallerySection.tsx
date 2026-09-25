@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useVelocity, useSpring, useTransform } from 'framer-motion';
 import { Sparkles, ArrowUpRight, X } from 'lucide-react';
 
@@ -133,6 +133,25 @@ const DiagonalPlaneCard: React.FC<{
   springVelocity: any;
   onSelect: (item: GalleryPlaneItem) => void;
 }> = ({ item, index, total, smoothProgress, springVelocity, onSelect }) => {
+  // Responsive pitch scaling across mobile (narrow screen) and desktop
+  const [pitch, setPitch] = useState({ x: 220, y: 130 });
+
+  useEffect(() => {
+    const handleResize = () => {
+      const w = window.innerWidth;
+      if (w < 640) {
+        setPitch({ x: 145, y: 88 });
+      } else if (w < 1024) {
+        setPitch({ x: 180, y: 110 });
+      } else {
+        setPitch({ x: 220, y: 130 });
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Position along the continuous trajectory
   // Normalized offset based on scroll progress and item index
   const planeOffset = useTransform(smoothProgress, (p: number) => {
@@ -141,14 +160,14 @@ const DiagonalPlaneCard: React.FC<{
     return (p - itemCenter) * (total * 0.9);
   });
 
-  // 1. REDUCED GAP: Tighter, elegant diagonal cascade (220px X, -130px Y)
+  // 1. RESPONSIVE GAP: Tighter on mobile (145px), full on desktop (220px)
   const x = useTransform(planeOffset, (offset: number) => {
-    return offset * 220; // Tighter pitch for continuous rhythmic flow
+    return offset * pitch.x;
   });
 
   const y = useTransform([planeOffset, springVelocity], ([offset, vel]: [number, number]) => {
-    const diagonalY = -offset * 130; // Diagonal ascent: bottom to top
-    const wave = Math.sin(offset * 1.8) * Math.min(50, Math.max(-50, vel * 35));
+    const diagonalY = -offset * pitch.y;
+    const wave = Math.sin(offset * 1.8) * Math.min(45, Math.max(-45, vel * 30));
     return diagonalY + wave;
   });
 
@@ -205,7 +224,7 @@ const DiagonalPlaneCard: React.FC<{
       role="button"
       tabIndex={0}
       aria-label={`Open project: ${item.title}`}
-      className="absolute top-1/2 left-1/2 w-[240px] sm:w-[280px] md:w-[305px] aspect-[3/4] cursor-pointer select-none origin-center rounded-3xl will-change-transform"
+      className="absolute top-1/2 left-1/2 w-[215px] sm:w-[265px] md:w-[305px] aspect-[3/4] cursor-pointer select-none origin-center rounded-3xl will-change-transform -ml-[107px] sm:-ml-[132px] md:-ml-[152px] -mt-[143px] sm:-mt-[176px] md:-mt-[203px]"
       style={{
         x,
         y,
@@ -216,8 +235,6 @@ const DiagonalPlaneCard: React.FC<{
         opacity,
         zIndex,
         pointerEvents,
-        marginLeft: '-150px',
-        marginTop: '-195px',
       }}
       onClick={(e) => {
         e.preventDefault();

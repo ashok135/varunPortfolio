@@ -306,7 +306,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <h1 className="relative z-10 flex items-baseline justify-center tracking-tight">
             {/* PORT Letters */}
             <span 
-              className="inline-flex items-baseline font-display font-black text-[80px] sm:text-[112px] md:text-[148px] lg:text-[180px] leading-[0.88] uppercase transition-all duration-300"
+              className="inline-flex items-baseline font-display font-black text-[68px] min-[390px]:text-[80px] sm:text-[112px] md:text-[148px] lg:text-[180px] leading-[0.88] uppercase transition-all duration-300"
               style={{
                 letterSpacing: '-0.04em',
                 color: isColorActive ? 'transparent' : '#121210',
@@ -327,7 +327,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
             {/* folio Letters */}
             <span 
-              className="inline-flex items-baseline font-script italic font-normal text-[92px] sm:text-[128px] md:text-[168px] lg:text-[205px] leading-[0.88] -ml-1 sm:-ml-2 transform -translate-y-1 sm:-translate-y-2 transition-all duration-300"
+              className="inline-flex items-baseline font-script italic font-normal text-[78px] min-[390px]:text-[92px] sm:text-[128px] md:text-[168px] lg:text-[205px] leading-[0.88] -ml-1 sm:-ml-2 transform -translate-y-1 sm:-translate-y-2 transition-all duration-300"
               style={{
                 fontFamily: "'Instrument Serif', 'Cormorant Garamond', Georgia, serif",
                 color: isColorActive ? 'transparent' : '#121210',
