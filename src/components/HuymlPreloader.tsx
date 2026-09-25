@@ -20,7 +20,8 @@ export const HuymlPreloader: React.FC<HuymlPreloaderProps> = ({ onComplete }) =>
   const containerRef = useRef<HTMLDivElement | null>(null);
   const lottieContainerRef = useRef<HTMLDivElement | null>(null);
   const lottieInstanceRef = useRef<AnimationItem | null>(null);
-  const counterRef = useRef<HTMLDivElement | null>(null);
+  const counterRef = useRef<HTMLSpanElement | null>(null);
+  const percentSignRef = useRef<HTMLSpanElement | null>(null);
   const curtainRef = useRef<HTMLDivElement | null>(null);
   const pusherWrapperRef = useRef<HTMLDivElement | null>(null);
   const statusRef = useRef<HTMLDivElement | null>(null);
@@ -138,6 +139,19 @@ export const HuymlPreloader: React.FC<HuymlPreloaderProps> = ({ onComplete }) =>
       if (counterRef.current) {
         const displayPercent = Math.min(100, Math.round((clampedP / finalProgress) * 100));
         counterRef.current.textContent = `${displayPercent}`;
+
+        // Turn number and percent sign black when reaching 70 or above
+        if (displayPercent >= 70) {
+          counterRef.current.style.color = '#000000';
+          if (percentSignRef.current) {
+            percentSignRef.current.style.color = 'rgba(0, 0, 0, 0.45)';
+          }
+        } else {
+          counterRef.current.style.color = '#ffffff';
+          if (percentSignRef.current) {
+            percentSignRef.current.style.color = 'rgba(255, 255, 255, 0.45)';
+          }
+        }
       }
 
       // 5. Update Asset Status label
@@ -292,19 +306,6 @@ export const HuymlPreloader: React.FC<HuymlPreloaderProps> = ({ onComplete }) =>
         className="absolute inset-y-0 right-0 bg-[#000000] z-10 will-change-[left]"
         style={{ left: '0%' }}
       >
-        {/* Dynamic Percentage Counter on the black curtain edge */}
-        <div className="absolute right-8 md:right-16 top-1/2 -translate-y-1/2 flex items-baseline gap-1 pointer-events-none text-white select-none">
-          <span
-            ref={counterRef}
-            className="font-serif font-normal text-6xl md:text-8xl lg:text-9xl tracking-tight leading-none text-white/95"
-          >
-            0
-          </span>
-          <span className="font-mono text-xs md:text-sm text-white/40 tracking-widest uppercase">
-            %
-          </span>
-        </div>
-
         {/* Real-time asset download monitor on black panel */}
         <div
           ref={statusRef}
@@ -312,6 +313,24 @@ export const HuymlPreloader: React.FC<HuymlPreloaderProps> = ({ onComplete }) =>
         >
           INITIALIZING NLE ASSET BUFFER
         </div>
+      </div>
+
+      {/* Dynamic Percentage Counter - Positioned at z-25, switches to black after 70% */}
+      <div className="absolute right-8 md:right-16 top-1/2 -translate-y-1/2 flex items-baseline gap-1 pointer-events-none select-none z-25">
+        <span
+          ref={counterRef}
+          className="font-serif font-normal text-6xl md:text-8xl lg:text-9xl tracking-tight leading-none transition-colors duration-300"
+          style={{ color: '#ffffff' }}
+        >
+          0
+        </span>
+        <span
+          ref={percentSignRef}
+          className="font-mono text-xs md:text-sm tracking-widest uppercase transition-colors duration-300"
+          style={{ color: 'rgba(255, 255, 255, 0.45)' }}
+        >
+          %
+        </span>
       </div>
 
       {/* 3. The Pushing Character (Positioned precisely at the curtain divider edge) */}
