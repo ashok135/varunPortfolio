@@ -165,14 +165,16 @@ const DiagonalPlaneCard: React.FC<{
     return offset * pitch.x;
   });
 
-  const y = useTransform([planeOffset, springVelocity], ([offset, vel]: [number, number]) => {
+  const y = useTransform([planeOffset, springVelocity] as any, (latest: any) => {
+    const [offset, vel] = latest as [number, number];
     const diagonalY = -offset * pitch.y;
     const wave = Math.sin(offset * 1.8) * Math.min(45, Math.max(-45, vel * 30));
     return diagonalY + wave;
   });
 
   // 2. DEPTH: Gentle falloff without burying outer cards so EVERY card remains easily hovered
-  const z = useTransform([planeOffset, springVelocity], ([offset, vel]: [number, number]) => {
+  const z = useTransform([planeOffset, springVelocity] as any, (latest: any) => {
+    const [offset, vel] = latest as [number, number];
     const dist = Math.abs(offset);
     const baseDepth = -dist * 16;
     const waveDepth = Math.cos(offset * 1.8) * Math.min(45, Math.max(-45, vel * 30));
@@ -187,14 +189,16 @@ const DiagonalPlaneCard: React.FC<{
   });
 
   // Yaw (rotateY)
-  const rotateY = useTransform([planeOffset, springVelocity], ([offset, vel]: [number, number]) => {
+  const rotateY = useTransform([planeOffset, springVelocity] as any, (latest: any) => {
+    const [offset, vel] = latest as [number, number];
     const baseRot = -28 + (offset * 1.8);
     const waveRot = Math.sin(offset * 1.2) * Math.min(8, Math.max(-8, vel * 5));
     return baseRot + waveRot;
   });
 
   // Roll (rotateZ)
-  const rotateZ = useTransform([planeOffset, springVelocity], ([offset, vel]: [number, number]) => {
+  const rotateZ = useTransform([planeOffset, springVelocity] as any, (latest: any) => {
+    const [offset, vel] = latest as [number, number];
     const basePitch = 12 + (offset * 0.5);
     const wavePitch = Math.cos(offset * 1.2) * Math.min(5, Math.max(-5, vel * 3));
     return basePitch + wavePitch;
@@ -235,7 +239,7 @@ const DiagonalPlaneCard: React.FC<{
         opacity,
         zIndex,
         pointerEvents,
-      }}
+      } as any}
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();

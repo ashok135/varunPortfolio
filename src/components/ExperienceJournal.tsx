@@ -1,5 +1,4 @@
 import React from 'react';
-import { ArrowUpRight, Check, Clock } from 'lucide-react';
 
 export const ExperienceJournal: React.FC = () => {
   const experiences = [

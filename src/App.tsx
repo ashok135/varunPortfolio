@@ -4,14 +4,16 @@ import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { EditorialProfileSection } from './components/EditorialProfileSection';
 import { VelocityGallerySection } from './components/VelocityGallerySection';
-import { CuratedWorks } from './components/CuratedWorks';
+import { HorizontalBentoProjects } from './components/HorizontalBentoProjects';
 import { ExperienceJournal } from './components/ExperienceJournal';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
+import { HuymlPreloader } from './components/HuymlPreloader';
 
 export const App: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isColorfulMode, setIsColorfulMode] = useState<boolean>(true);
+  const [isSiteLoaded, setIsSiteLoaded] = useState<boolean>(false);
   const [isHeroFinished, setIsHeroFinished] = useState<boolean>(() => {
     if (typeof window !== 'undefined' && window.location.hash && window.location.hash !== '#hero') {
       return true;
@@ -31,10 +33,8 @@ export const App: React.FC = () => {
     });
     lenisRef.current = lenis;
 
-    // If hero video has not finished playing, lock Lenis at top
-    if (!isHeroFinished && window.scrollY <= 10) {
-      lenis.stop();
-    }
+    // Initially lock Lenis while preloader or hero is running
+    lenis.stop();
 
     let rafId: number;
     function raf(time: number) {
@@ -50,9 +50,13 @@ export const App: React.FC = () => {
     };
   }, []);
 
-  // Synchronize Lenis scrolling with Hero completion
+  // Synchronize Lenis scrolling with Preloader and Hero completion
   useEffect(() => {
     if (!lenisRef.current) return;
+    if (!isSiteLoaded) {
+      lenisRef.current.stop();
+      return;
+    }
     if (isHeroFinished) {
       lenisRef.current.start();
     } else {
@@ -60,7 +64,7 @@ export const App: React.FC = () => {
         lenisRef.current.stop();
       }
     }
-  }, [isHeroFinished]);
+  }, [isSiteLoaded, isHeroFinished]);
 
   // Global scroll-reveal observer: brings text in from outside as you scroll
   useEffect(() => {
@@ -104,6 +108,7 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#f5f2eb] text-[#1c1b18] flex flex-col font-sans selection:bg-[#1c1b18] selection:text-[#f5f2eb]">
+      <HuymlPreloader onComplete={() => setIsSiteLoaded(true)} />
       <Navbar />
       <main className="flex-1">
         <HeroSection 
@@ -116,10 +121,7 @@ export const App: React.FC = () => {
         />
         <EditorialProfileSection />
         <VelocityGallerySection />
-        <CuratedWorks 
-          activeCategory={selectedCategory}
-          onSelectCategory={handleSelectCategory}
-        />
+        <HorizontalBentoProjects />
         <ExperienceJournal />
         <ContactSection />
       </main>

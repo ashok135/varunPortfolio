@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowUpRight, CheckCircle2, Mail, MapPin, Send } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
 
 export const ContactSection: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);

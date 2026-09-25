@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Mail, MapPin, Copy, Check, Clock, Volume2, Sparkles, Film, Award, Command, ChevronRight } from 'lucide-react';
+import { Mail, MapPin, Copy, Check, Volume2, Film, Command } from 'lucide-react';
 
 interface Milestone {
   id: string;
@@ -39,7 +39,6 @@ export const EditorialProfileSection: React.FC = () => {
   // 3D Mouse Tilt State for Film Cell
   const [mouseTilt, setMouseTilt] = useState({ x: 0, y: 0 });
   const [splitWipe, setSplitWipe] = useState<number>(55);
-  const [isPortraitHovered, setIsPortraitHovered] = useState<boolean>(false);
 
   // 3D Mouse Parallax for Keycaps Container
   const [keycapMouseTilt, setKeycapMouseTilt] = useState({ x: 0, y: 0 });
@@ -93,7 +92,6 @@ export const EditorialProfileSection: React.FC = () => {
 
   const handleFilmCellMouseLeave = () => {
     setMouseTilt({ x: 0, y: 0 });
-    setIsPortraitHovered(false);
     setSplitWipe(50);
   };
 
@@ -471,7 +469,6 @@ export const EditorialProfileSection: React.FC = () => {
               }}
               onMouseMove={handleFilmCellMouseMove}
               onMouseLeave={handleFilmCellMouseLeave}
-              onMouseEnter={() => setIsPortraitHovered(true)}
             >
               {/* Top 35mm Sprocket Holes */}
               <div 
