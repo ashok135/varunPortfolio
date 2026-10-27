@@ -21,7 +21,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     year: "2026",
     client: "Commercial Studio",
     image: "/portfolio/banner_3d_motion.jpg",
-    video: "/portfolio/ads5.mp4",
+    video: "/videos/ads.mp4",
     description: "High-octane commercial cut with sound-synced micro-frame rhythms and polished color science."
   },
   {
@@ -31,7 +31,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     year: "2026",
     client: "Calorie Buddy AI",
     image: "/portfolio/banner_social.jpg",
-    video: "/portfolio/calorie_buddy_final.mp4",
+    video: "/videos/calorie_buddy.mp4",
     description: "Dynamic AI conversational assistant reel with viral pacing, kinetic captions, and sound ramps."
   },
   {
@@ -41,7 +41,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     year: "2026",
     client: "Coco Panda",
     image: "/portfolio/preview_section_3.jpg",
-    video: "/portfolio/coco_panda_script_11.mp4",
+    video: "/videos/coco_panda.mp4",
     description: "Script 11 full AI animation and promotional vertical reel engineered for maximum viewer hook."
   },
   {
@@ -60,7 +60,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     year: "2026",
     client: "Date Night AI",
     image: "/portfolio/preview_section_6.jpg",
-    video: "/portfolio/date_night_oct5.mp4",
+    video: "/videos/date_night.mp4",
     description: "Cinematic relationship dynamic short with tailored rhythm cuts and atmospheric sound design."
   },
   {
@@ -79,7 +79,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     year: "2026",
     client: "Lawyer Buddy AI",
     image: "/portfolio/preview_section_8.jpg",
-    video: "/portfolio/lawyer_buddy_script5.mp4",
+    video: "/videos/lawyer_buddy.mp4",
     description: "1x1 square format legal advisory promo with crisp sound mastering and retention timing."
   }
 ];
