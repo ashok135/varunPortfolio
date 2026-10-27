@@ -8,6 +8,7 @@ interface GalleryPlaneItem {
   category: string;
   year: string;
   image: string;
+  video?: string;
   client: string;
   description: string;
 }
@@ -15,111 +16,71 @@ interface GalleryPlaneItem {
 const galleryPlanes: GalleryPlaneItem[] = [
   {
     id: 1,
-    title: "Chromatic Euphoria",
-    category: "Post-Production",
+    title: "Commercial Kinetic Ad",
+    category: "Commercial Video",
     year: "2026",
-    client: "Vogue Visuals",
-    image: "/portfolio/preview_section_0.jpg",
-    description: "Vibrant color blooming & dynamic contrast grading for international fashion editorial."
+    client: "Commercial Studio",
+    image: "/portfolio/banner_3d_motion.jpg",
+    video: "/portfolio/ads5.mp4",
+    description: "High-octane commercial cut with sound-synced micro-frame rhythms and polished color science."
   },
   {
     id: 2,
-    title: "Artisan Dimension",
-    category: "3D Spatial Design",
-    year: "2025",
-    client: "Studio Kanso",
-    image: "/portfolio/motion_3d_bakery.jpg",
-    description: "Photorealistic 3D environment rendering with physical material dispersion and volumetric light."
+    title: "AI Reel — Calorie Buddy",
+    category: "AI Short-Form",
+    year: "2026",
+    client: "Calorie Buddy AI",
+    image: "/portfolio/banner_social.jpg",
+    video: "/portfolio/calorie_buddy_final.mp4",
+    description: "Dynamic AI conversational assistant reel with viral pacing, kinetic captions, and sound ramps."
   },
   {
     id: 3,
-    title: "Kinetic Future",
-    category: "Motion Graphics",
+    title: "AI Reel — Coco Panda",
+    category: "AI Short-Form",
     year: "2026",
-    client: "CyberPulse Media",
-    image: "/portfolio/banner_3d_motion.jpg",
-    description: "High-octane typographic motion and generative particle flows for futuristic product release."
+    client: "Coco Panda",
+    image: "/portfolio/preview_section_3.jpg",
+    video: "/portfolio/coco_panda_script_11.mp4",
+    description: "Script 11 full AI animation and promotional vertical reel engineered for maximum viewer hook."
   },
   {
     id: 4,
-    title: "Botanical Ephemera",
+    title: "Korda Helmet Key Art",
     category: "Print & Posters",
-    year: "2025",
-    client: "Atelier Flora",
-    image: "/portfolio/posters_gallery.jpg",
-    description: "Hand-crafted typography combined with pressed floral scans and textured risograph paper."
+    year: "2026",
+    client: "Korda Helmets",
+    image: "/portfolio/korda_helmet_poster.jpg",
+    description: "High-impact key visual poster design combining Swiss typographic hierarchy and modern sports branding."
   },
   {
     id: 5,
-    title: "Fusun Aesthetics",
-    category: "Brand Identity",
-    year: "2025",
-    client: "Fusun Skincare",
-    image: "/portfolio/fusun_mockups.jpg",
-    description: "Comprehensive visual identity and minimalist packaging system for organic beauty label."
+    title: "AI Reel — Date Night",
+    category: "AI Short-Form",
+    year: "2026",
+    client: "Date Night AI",
+    image: "/portfolio/preview_section_6.jpg",
+    video: "/portfolio/date_night_oct5.mp4",
+    description: "Cinematic relationship dynamic short with tailored rhythm cuts and atmospheric sound design."
   },
   {
     id: 6,
-    title: "Elysian Bloom",
-    category: "Color Grading",
+    title: "Creative Graphic Poster",
+    category: "Visual Identity",
     year: "2026",
-    client: "Aether Records",
-    image: "/portfolio/preview_section_2.jpg",
-    description: "Delicate pastel hues and high-dynamic-range film emulation for music video narrative."
+    client: "Creative Collective",
+    image: "/portfolio/creative_poster_2.jpeg",
+    description: "Editorial print layout showcasing tactile risograph layers and architectural composition."
   },
   {
     id: 7,
-    title: "Neo Character",
-    category: "2D Animation",
-    year: "2025",
-    client: "Mascot Collective",
-    image: "/portfolio/motion_2d_mascot.jpg",
-    description: "Expressive frame-by-frame character animation with fluid hand-drawn line textures."
-  },
-  {
-    id: 8,
-    title: "Dayknights Noir",
-    category: "Art Direction",
-    year: "2025",
-    client: "Midnight Studio",
-    image: "/portfolio/dayknights_mockups.jpg",
-    description: "Cinematic noir editorial concept exploring shadows, monolithic structures, and film grain."
-  },
-  {
-    id: 9,
-    title: "Vivid Nocturne",
-    category: "Video Editing",
+    title: "AI Reel — Lawyer Buddy",
+    category: "AI Short-Form",
     year: "2026",
-    client: "Pulse Synthetics",
-    image: "/portfolio/preview_section_6.jpg",
-    description: "Fast-paced rhythm montage synchronizing rapid jump cuts with analog synthesizer score."
-  },
-  {
-    id: 10,
-    title: "Buena Vista",
-    category: "Commercial Film",
-    year: "2025",
-    client: "Solara Living",
-    image: "/portfolio/social_buenavista.jpg",
-    description: "Lifestyle brand showcase featuring natural sunlight capture and golden hour palettes."
-  },
-  {
-    id: 11,
-    title: "Spirit Revengers",
-    category: "Film Direction",
-    year: "2026",
-    client: "Ghostlight Films",
-    image: "/portfolio/spirit_revengers_header.jpg",
-    description: "Dark fantasy action sequence with bespoke title sequences and stylized color grading."
-  },
-  {
-    id: 12,
-    title: "Solaris Drift",
-    category: "Visual Effects",
-    year: "2025",
-    client: "Orbit Sci-Fi Lab",
-    image: "/portfolio/part2_section_2.jpg",
-    description: "Cosmic visual effects blending macro liquid photography with celestial 3D simulations."
+    client: "Lawyer Buddy AI",
+    image: "/portfolio/preview_section_8.jpg",
+    video: "/portfolio/lawyer_buddy_script5.mp4",
+    description: "1x1 square format legal advisory promo with crisp sound mastering and retention timing."
   }
 ];
 
@@ -257,13 +218,25 @@ const DiagonalPlaneCard: React.FC<{
         className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-[0_16px_36px_-10px_rgba(28,25,23,0.18)] border border-stone-200/90 hover:border-rose-400/80 hover:shadow-[0_24px_50px_-10px_rgba(225,29,72,0.25)] transition-all duration-300 group cursor-pointer"
       >
         
-        {/* Artwork Image */}
-        <img
-          src={item.image}
-          alt={item.title}
-          draggable={false}
-          className="w-full h-full object-cover filter contrast-[104%] transition-transform duration-500 ease-out group-hover:scale-105 pointer-events-none"
-        />
+        {/* Artwork Image or Streaming Video on Plane */}
+        {item.video ? (
+          <video
+            src={item.video}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover filter contrast-[104%] pointer-events-none"
+          />
+        ) : (
+          <img
+            src={item.image}
+            alt={item.title}
+            draggable={false}
+            className="w-full h-full object-cover filter contrast-[104%] transition-transform duration-500 ease-out group-hover:scale-105 pointer-events-none"
+          />
+        )}
 
         {/* Ambient Dark Bottom Vignette so Title & Category are Always Ultra-Readable */}
         <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-transparent pointer-events-none" />
@@ -422,13 +395,23 @@ export const VelocityGallerySection: React.FC = () => {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Left Image View */}
-            <div className="w-full md:w-1/2 aspect-[4/3] md:aspect-auto relative overflow-hidden bg-stone-900">
-              <img
-                src={selectedItem.image}
-                alt={selectedItem.title}
-                className="w-full h-full object-cover"
-              />
+            {/* Left Image / Video View */}
+            <div className="w-full md:w-1/2 aspect-[4/3] md:aspect-auto relative overflow-hidden bg-stone-900 flex items-center justify-center">
+              {selectedItem.video ? (
+                <video
+                  src={selectedItem.video}
+                  controls
+                  autoPlay
+                  playsInline
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <img
+                  src={selectedItem.image}
+                  alt={selectedItem.title}
+                  className="w-full h-full object-cover"
+                />
+              )}
             </div>
 
             {/* Right Information - White Theme */}
