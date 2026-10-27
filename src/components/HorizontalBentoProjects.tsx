@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, Play, Film, X } from 'lucide-react';
 
@@ -11,6 +11,7 @@ export interface BentoProject {
   year: string;
   video?: string;
   image?: string;
+  poster?: string;
   aspect?: string;
   client?: string;
   role: string;
@@ -19,6 +20,58 @@ export interface BentoProject {
   badge?: string;
   stat?: { label: string; value: string };
 }
+
+// High-Performance Viewport-Aware Video Player: Only decodes when in viewport to prevent GPU lag
+const SmartBentoVideo: React.FC<{
+  src: string;
+  poster?: string;
+  className?: string;
+}> = ({ src, poster, className }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+
+    if (isInView) {
+      v.play().catch(() => {});
+    } else {
+      v.pause();
+    }
+  }, [isInView]);
+
+  return (
+    <div ref={containerRef} className="w-full h-full relative">
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        muted
+        loop
+        playsInline
+        preload={isInView ? "metadata" : "none"}
+        className={className}
+      />
+    </div>
+  );
+};
 
 export const HorizontalBentoProjects: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -55,6 +108,7 @@ export const HorizontalBentoProjects: React.FC = () => {
       role: 'Lead Video Editor & Colorist',
       deliverables: ['Premiere Pro', 'DaVinci Resolve', 'Sound Design'],
       video: '/videos/ads.mp4',
+      poster: '/videos/posters/ads_poster.jpg',
       badge: 'FEATURED 16:9',
       stat: { label: 'VIEW RETENTION', value: '98.4%' },
       description: 'An exploration of rhythmic pacing, seamless cuts, and immersive audio storytelling crafted for maximum audience retention and emotional resonance.',
@@ -71,6 +125,7 @@ export const HorizontalBentoProjects: React.FC = () => {
       role: 'Short-Form Reel Editor',
       deliverables: ['Retention Hooks', 'Kinetic Typography', 'Sound Design'],
       video: '/videos/calorie_buddy.mp4',
+      poster: '/videos/posters/calorie_buddy_poster.jpg',
       badge: '9:16 REEL',
       stat: { label: 'COMPLETION RATE', value: '96.2%' },
       description: 'Engaging AI conversational assistant reel engineered for viral retention on Instagram Reels and TikTok with sound-synced kinetic subtitles.',
@@ -86,6 +141,7 @@ export const HorizontalBentoProjects: React.FC = () => {
       role: 'AI Animation Video Editor',
       deliverables: ['Sound Effects', 'Pacing Cuts', 'Visual Grading'],
       video: '/videos/coco_panda.mp4',
+      poster: '/videos/posters/coco_panda_poster.jpg',
       badge: '9:16 REEL',
       stat: { label: 'AUDIENCE REACH', value: '45M+' },
       description: 'Full vertical AI animation promotional video cut to sound-synced rhythm with playful character motion styling and retention hooks.',
@@ -101,6 +157,7 @@ export const HorizontalBentoProjects: React.FC = () => {
       role: 'Creative Story Editor',
       deliverables: ['Dynamic Cuts', 'Audio Mixing', 'Color Accent'],
       video: '/videos/date_night.mp4',
+      poster: '/videos/posters/date_night_poster.jpg',
       badge: '9:16 REEL',
       stat: { label: 'VIEW VELOCITY', value: '12M+ Views' },
       description: 'High-retention social reel capturing relatable relationship humor, dynamic pacing, and moody cinematic color grading.',
@@ -116,6 +173,7 @@ export const HorizontalBentoProjects: React.FC = () => {
       role: 'AI Video Editor',
       deliverables: ['Direct Response', 'Voice Sync', 'Motion Graphics'],
       video: '/videos/lawyer_buddy.mp4',
+      poster: '/videos/posters/lawyer_buddy_poster.jpg',
       badge: '1:1 SQUARE',
       stat: { label: 'CTR CONVERSION', value: '8.4%' },
       description: '1x1 square format legal advisory promo with crisp sound mastering, clear visual hierarchy, and retention timing.',
@@ -211,13 +269,9 @@ export const HorizontalBentoProjects: React.FC = () => {
               >
                 {/* 16:9 Video Frame */}
                 <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden border border-[#c5bca7] bg-black">
-                  <video
-                    src={projects[0].video}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
+                  <SmartBentoVideo
+                    src={projects[0].video!}
+                    poster={projects[0].poster}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter contrast-[105%]"
                   />
                   
@@ -286,13 +340,9 @@ export const HorizontalBentoProjects: React.FC = () => {
                 className="w-[190px] sm:w-[220px] md:w-[240px] bg-[#ede8dd] rounded-2xl sm:rounded-3xl border border-[#dfd8c7] p-3.5 sm:p-4 flex flex-col justify-between shadow-paper-sm hover:shadow-paper transition-all duration-300 cursor-pointer group relative overflow-hidden shrink-0"
               >
                 <div className="relative aspect-[9/14] w-full rounded-2xl overflow-hidden border-2 border-[#1c1b18] bg-black shadow-inner">
-                  <video
-                    src={projects[1].video}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
+                  <SmartBentoVideo
+                    src={projects[1].video!}
+                    poster={projects[1].poster}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-14 h-2.5 bg-black rounded-full border border-white/20 flex items-center justify-center z-10">
@@ -324,13 +374,9 @@ export const HorizontalBentoProjects: React.FC = () => {
                 className="w-[190px] sm:w-[220px] md:w-[240px] bg-[#ede8dd] rounded-2xl sm:rounded-3xl border border-[#dfd8c7] p-3.5 sm:p-4 flex flex-col justify-between shadow-paper-sm hover:shadow-paper transition-all duration-300 cursor-pointer group relative overflow-hidden shrink-0"
               >
                 <div className="relative aspect-[9/14] w-full rounded-2xl overflow-hidden border-2 border-[#1c1b18] bg-black shadow-inner">
-                  <video
-                    src={projects[2].video}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
+                  <SmartBentoVideo
+                    src={projects[2].video!}
+                    poster={projects[2].poster}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-14 h-2.5 bg-black rounded-full border border-white/20 flex items-center justify-center z-10">
@@ -362,13 +408,9 @@ export const HorizontalBentoProjects: React.FC = () => {
                 className="w-[190px] sm:w-[220px] md:w-[240px] bg-[#ede8dd] rounded-2xl sm:rounded-3xl border border-[#dfd8c7] p-3.5 sm:p-4 flex flex-col justify-between shadow-paper-sm hover:shadow-paper transition-all duration-300 cursor-pointer group relative overflow-hidden shrink-0"
               >
                 <div className="relative aspect-[9/14] w-full rounded-2xl overflow-hidden border-2 border-[#1c1b18] bg-black shadow-inner">
-                  <video
-                    src={projects[3].video}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
+                  <SmartBentoVideo
+                    src={projects[3].video!}
+                    poster={projects[3].poster}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-14 h-2.5 bg-black rounded-full border border-white/20 flex items-center justify-center z-10">
@@ -400,13 +442,9 @@ export const HorizontalBentoProjects: React.FC = () => {
                 className="w-[200px] sm:w-[230px] md:w-[250px] bg-[#ede8dd] rounded-2xl sm:rounded-3xl border border-[#dfd8c7] p-3.5 sm:p-4 flex flex-col justify-between shadow-paper-sm hover:shadow-paper transition-all duration-300 cursor-pointer group relative overflow-hidden shrink-0"
               >
                 <div className="relative aspect-square w-full rounded-2xl overflow-hidden border-2 border-[#1c1b18] bg-black shadow-inner">
-                  <video
-                    src={projects[4].video}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
+                  <SmartBentoVideo
+                    src={projects[4].video!}
+                    poster={projects[4].poster}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute top-2 left-2 bg-[#1c1b18]/85 text-white text-[8px] font-mono px-2 py-0.5 rounded-full z-10 border border-white/20">

@@ -128,6 +128,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         hasScrolledPastHeroRef.current = true;
       }
 
+      // Optimization: Pause hero video when off-screen to free GPU decoding resources
+      const v = videoRef.current;
+      if (v) {
+        if (scrollY > window.innerHeight * 0.85) {
+          if (!v.paused) v.pause();
+        } else {
+          if (v.paused && !isVideoFinished) v.play().catch(() => {});
+        }
+      }
+
       // Only reset when user was actually down in the page and scrolled all the way back to the top
       if (scrollY <= 5 && isVideoFinished && hasScrolledPastHeroRef.current) {
         hasScrolledPastHeroRef.current = false;

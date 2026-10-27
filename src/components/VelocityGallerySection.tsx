@@ -20,7 +20,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     category: "Commercial Video",
     year: "2026",
     client: "Commercial Studio",
-    image: "/portfolio/banner_3d_motion.jpg",
+    image: "/videos/posters/ads_poster.jpg",
     video: "/videos/ads.mp4",
     description: "High-octane commercial cut with sound-synced micro-frame rhythms and polished color science."
   },
@@ -30,7 +30,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     category: "AI Short-Form",
     year: "2026",
     client: "Calorie Buddy AI",
-    image: "/portfolio/banner_social.jpg",
+    image: "/videos/posters/calorie_buddy_poster.jpg",
     video: "/videos/calorie_buddy.mp4",
     description: "Dynamic AI conversational assistant reel with viral pacing, kinetic captions, and sound ramps."
   },
@@ -40,7 +40,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     category: "AI Short-Form",
     year: "2026",
     client: "Coco Panda",
-    image: "/portfolio/preview_section_3.jpg",
+    image: "/videos/posters/coco_panda_poster.jpg",
     video: "/videos/coco_panda.mp4",
     description: "Script 11 full AI animation and promotional vertical reel engineered for maximum viewer hook."
   },
@@ -59,7 +59,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     category: "AI Short-Form",
     year: "2026",
     client: "Date Night AI",
-    image: "/portfolio/preview_section_6.jpg",
+    image: "/videos/posters/date_night_poster.jpg",
     video: "/videos/date_night.mp4",
     description: "Cinematic relationship dynamic short with tailored rhythm cuts and atmospheric sound design."
   },
@@ -78,7 +78,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     category: "AI Short-Form",
     year: "2026",
     client: "Lawyer Buddy AI",
-    image: "/portfolio/preview_section_8.jpg",
+    image: "/videos/posters/lawyer_buddy_poster.jpg",
     video: "/videos/lawyer_buddy.mp4",
     description: "1x1 square format legal advisory promo with crisp sound mastering and retention timing."
   }
@@ -96,6 +96,7 @@ const DiagonalPlaneCard: React.FC<{
 }> = ({ item, index, total, smoothProgress, springVelocity, onSelect }) => {
   // Responsive pitch scaling across mobile (narrow screen) and desktop
   const [pitch, setPitch] = useState({ x: 220, y: 130 });
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -206,6 +207,8 @@ const DiagonalPlaneCard: React.FC<{
         e.stopPropagation();
         onSelect(item);
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       whileHover={{
         scale: 1.05,
         zIndex: 999,
@@ -218,8 +221,8 @@ const DiagonalPlaneCard: React.FC<{
         className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-[0_16px_36px_-10px_rgba(28,25,23,0.18)] border border-stone-200/90 hover:border-rose-400/80 hover:shadow-[0_24px_50px_-10px_rgba(225,29,72,0.25)] transition-all duration-300 group cursor-pointer"
       >
         
-        {/* Artwork Image or Streaming Video on Plane */}
-        {item.video ? (
+        {/* Artwork Image or Streaming Video on Plane (Video only decodes on hover to maintain 120fps) */}
+        {item.video && isHovered ? (
           <video
             src={item.video}
             autoPlay
@@ -234,6 +237,7 @@ const DiagonalPlaneCard: React.FC<{
             src={item.image}
             alt={item.title}
             draggable={false}
+            loading="lazy"
             className="w-full h-full object-cover filter contrast-[104%] transition-transform duration-500 ease-out group-hover:scale-105 pointer-events-none"
           />
         )}
