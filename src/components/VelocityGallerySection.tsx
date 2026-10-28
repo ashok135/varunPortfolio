@@ -11,6 +11,7 @@ interface GalleryPlaneItem {
   video?: string;
   client: string;
   description: string;
+  driveUrl: string;
 }
 
 const galleryPlanes: GalleryPlaneItem[] = [
@@ -21,7 +22,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     year: "2026",
     client: "Commercial Studio",
     image: "/videos/posters/ads_poster.jpg",
-    video: "/videos/ads.mp4",
+    driveUrl: "https://drive.google.com/file/d/1Ikr8C7Q1y7nT9MI3S_TdQ6F-DKMmUWbB/view",
     description: "High-octane commercial cut with sound-synced micro-frame rhythms and polished color science."
   },
   {
@@ -31,7 +32,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     year: "2026",
     client: "Calorie Buddy AI",
     image: "/videos/posters/calorie_buddy_poster.jpg",
-    video: "/videos/calorie_buddy.mp4",
+    driveUrl: "https://drive.google.com/file/d/1mcIVebZKGmOYndiCB7h7S52vegXagUkR/view",
     description: "Dynamic AI conversational assistant reel with viral pacing, kinetic captions, and sound ramps."
   },
   {
@@ -41,7 +42,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     year: "2026",
     client: "Coco Panda",
     image: "/videos/posters/coco_panda_poster.jpg",
-    video: "/videos/coco_panda.mp4",
+    driveUrl: "https://drive.google.com/file/d/1bHOythj1ctWD2CKx6FDNO0ajCeXL8W6n/view",
     description: "Script 11 full AI animation and promotional vertical reel engineered for maximum viewer hook."
   },
   {
@@ -51,6 +52,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     year: "2026",
     client: "Korda Helmets",
     image: "/portfolio/korda_helmet_poster.jpg",
+    driveUrl: "https://drive.google.com/file/d/1q0zaeaAM-VRn721_0rE-VDkbejTzgqwS/view",
     description: "High-impact key visual poster design combining Swiss typographic hierarchy and modern sports branding."
   },
   {
@@ -60,7 +62,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     year: "2026",
     client: "Date Night AI",
     image: "/videos/posters/date_night_poster.jpg",
-    video: "/videos/date_night.mp4",
+    driveUrl: "https://drive.google.com/file/d/1MHrsoza8gQN-Dq43sDMUnhgbBLXKKCEM/view",
     description: "Cinematic relationship dynamic short with tailored rhythm cuts and atmospheric sound design."
   },
   {
@@ -70,6 +72,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     year: "2026",
     client: "Creative Collective",
     image: "/portfolio/creative_poster_2.jpeg",
+    driveUrl: "https://drive.google.com/file/d/18NMgb6RCpz3efzAFBADCha19WH_FoOSq/view",
     description: "Editorial print layout showcasing tactile risograph layers and architectural composition."
   },
   {
@@ -79,7 +82,7 @@ const galleryPlanes: GalleryPlaneItem[] = [
     year: "2026",
     client: "Lawyer Buddy AI",
     image: "/videos/posters/lawyer_buddy_poster.jpg",
-    video: "/videos/lawyer_buddy.mp4",
+    driveUrl: "https://drive.google.com/file/d/1Zl_xzclPNQ1sJKicAG45Ov9ORE4fN-2F/view",
     description: "1x1 square format legal advisory promo with crisp sound mastering and retention timing."
   }
 ];
@@ -392,7 +395,7 @@ export const VelocityGallerySection: React.FC = () => {
                 className="w-full h-full object-contain"
               />
               <a
-                href="https://drive.google.com/drive/folders/1Iw96jLL406pFcSOZYTMkzANU4WYX663P"
+                href={selectedItem.driveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/20 transition-colors z-20"
@@ -444,7 +447,7 @@ export const VelocityGallerySection: React.FC = () => {
 
               <div className="pt-6 border-t border-stone-300/80 mt-8 flex items-center justify-between gap-3 flex-wrap">
                 <a
-                  href="https://drive.google.com/drive/folders/1Iw96jLL406pFcSOZYTMkzANU4WYX663P"
+                  href={selectedItem.driveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold tracking-wide transition-all shadow-md cursor-pointer"

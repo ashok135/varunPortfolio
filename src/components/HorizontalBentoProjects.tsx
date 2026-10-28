@@ -42,7 +42,7 @@ export const HorizontalBentoProjects: React.FC = () => {
   const x = useTransform(smoothProgress, [0, 1], ['0%', '-72%']);
   const progressPercent = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
 
-  // Real projects pointing directly to Google Drive
+  // Real projects pointing directly to particular Google Drive files as per order
   const projects: BentoProject[] = [
     // --- 1. Commercial Ad Video ---
     {
@@ -58,7 +58,7 @@ export const HorizontalBentoProjects: React.FC = () => {
       image: '/videos/posters/ads_poster.jpg',
       badge: 'FEATURED 16:9',
       stat: { label: 'VIEW RETENTION', value: '98.4%' },
-      driveUrl: GOOGLE_DRIVE_URL,
+      driveUrl: 'https://drive.google.com/file/d/1Ikr8C7Q1y7nT9MI3S_TdQ6F-DKMmUWbB/view',
       description: 'An exploration of rhythmic pacing, seamless cuts, and immersive audio storytelling crafted for maximum audience retention and emotional resonance.',
     },
     // --- 2. AI Reels ---
@@ -75,7 +75,7 @@ export const HorizontalBentoProjects: React.FC = () => {
       image: '/videos/posters/calorie_buddy_poster.jpg',
       badge: '9:16 REEL',
       stat: { label: 'COMPLETION RATE', value: '96.2%' },
-      driveUrl: GOOGLE_DRIVE_URL,
+      driveUrl: 'https://drive.google.com/file/d/1mcIVebZKGmOYndiCB7h7S52vegXagUkR/view',
       description: 'Engaging AI conversational assistant reel engineered for viral retention on Instagram Reels and TikTok with sound-synced kinetic subtitles.',
     },
     {
@@ -91,7 +91,7 @@ export const HorizontalBentoProjects: React.FC = () => {
       image: '/videos/posters/coco_panda_poster.jpg',
       badge: '9:16 REEL',
       stat: { label: 'AUDIENCE REACH', value: '45M+' },
-      driveUrl: GOOGLE_DRIVE_URL,
+      driveUrl: 'https://drive.google.com/file/d/1bHOythj1ctWD2CKx6FDNO0ajCeXL8W6n/view',
       description: 'Full vertical AI animation promotional video cut to sound-synced rhythm with playful character motion styling and retention hooks.',
     },
     {
@@ -107,7 +107,7 @@ export const HorizontalBentoProjects: React.FC = () => {
       image: '/videos/posters/date_night_poster.jpg',
       badge: '9:16 REEL',
       stat: { label: 'VIEW VELOCITY', value: '12M+ Views' },
-      driveUrl: GOOGLE_DRIVE_URL,
+      driveUrl: 'https://drive.google.com/file/d/1MHrsoza8gQN-Dq43sDMUnhgbBLXKKCEM/view',
       description: 'High-retention social reel capturing relatable relationship humor, dynamic pacing, and moody cinematic color grading.',
     },
     {
@@ -123,7 +123,7 @@ export const HorizontalBentoProjects: React.FC = () => {
       image: '/videos/posters/lawyer_buddy_poster.jpg',
       badge: '1:1 SQUARE',
       stat: { label: 'CTR CONVERSION', value: '8.4%' },
-      driveUrl: GOOGLE_DRIVE_URL,
+      driveUrl: 'https://drive.google.com/file/d/1Zl_xzclPNQ1sJKicAG45Ov9ORE4fN-2F/view',
       description: '1x1 square format legal advisory promo with crisp sound mastering, clear visual hierarchy, and retention timing.',
     },
     // --- 3. Posters ---
@@ -140,7 +140,7 @@ export const HorizontalBentoProjects: React.FC = () => {
       image: '/portfolio/korda_helmet_poster.jpg',
       badge: 'POSTER PRINT',
       stat: { label: 'CAMPAIGN', value: 'KORDA HELMET' },
-      driveUrl: GOOGLE_DRIVE_URL,
+      driveUrl: 'https://drive.google.com/file/d/1q0zaeaAM-VRn721_0rE-VDkbejTzgqwS/view',
       description: 'High-impact key visual poster design combining Swiss typographic hierarchy and modern sports branding with bold aerodynamic silhouettes.',
     },
     {
@@ -156,7 +156,7 @@ export const HorizontalBentoProjects: React.FC = () => {
       image: '/portfolio/creative_poster_2.jpeg',
       badge: 'POSTER PRINT',
       stat: { label: 'PRINT RUN', value: 'LIMITED ARCHIVE' },
-      driveUrl: GOOGLE_DRIVE_URL,
+      driveUrl: 'https://drive.google.com/file/d/18NMgb6RCpz3efzAFBADCha19WH_FoOSq/view',
       description: 'Editorial graphic poster investigating tactile paper textures, contrast balance, and modern asymmetric Swiss typography.',
     },
   ];
