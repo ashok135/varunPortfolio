@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useVelocity, useSpring, useTransform } from 'framer-motion';
-import { Sparkles, ArrowUpRight, X } from 'lucide-react';
+import { Sparkles, ArrowUpRight, X, Play } from 'lucide-react';
 
 interface GalleryPlaneItem {
   id: number;
@@ -96,7 +96,6 @@ const DiagonalPlaneCard: React.FC<{
 }> = ({ item, index, total, smoothProgress, springVelocity, onSelect }) => {
   // Responsive pitch scaling across mobile (narrow screen) and desktop
   const [pitch, setPitch] = useState({ x: 220, y: 130 });
-  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -207,8 +206,6 @@ const DiagonalPlaneCard: React.FC<{
         e.stopPropagation();
         onSelect(item);
       }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       whileHover={{
         scale: 1.05,
         zIndex: 999,
@@ -221,26 +218,14 @@ const DiagonalPlaneCard: React.FC<{
         className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-[0_16px_36px_-10px_rgba(28,25,23,0.18)] border border-stone-200/90 hover:border-rose-400/80 hover:shadow-[0_24px_50px_-10px_rgba(225,29,72,0.25)] transition-all duration-300 group cursor-pointer"
       >
         
-        {/* Artwork Image or Streaming Video on Plane (Video only decodes on hover to maintain 120fps) */}
-        {item.video && isHovered ? (
-          <video
-            src={item.video}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className="w-full h-full object-cover filter contrast-[104%] pointer-events-none"
-          />
-        ) : (
-          <img
-            src={item.image}
-            alt={item.title}
-            draggable={false}
-            loading="lazy"
-            className="w-full h-full object-cover filter contrast-[104%] transition-transform duration-500 ease-out group-hover:scale-105 pointer-events-none"
-          />
-        )}
+        {/* High-Impact Static Thumbnail Artwork Image */}
+        <img
+          src={item.image}
+          alt={item.title}
+          draggable={false}
+          loading="lazy"
+          className="w-full h-full object-cover filter contrast-[104%] transition-transform duration-500 ease-out group-hover:scale-105 pointer-events-none"
+        />
 
         {/* Ambient Dark Bottom Vignette so Title & Category are Always Ultra-Readable */}
         <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-transparent pointer-events-none" />
@@ -399,23 +384,26 @@ export const VelocityGallerySection: React.FC = () => {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Left Image / Video View */}
-            <div className="w-full md:w-1/2 aspect-[4/3] md:aspect-auto relative overflow-hidden bg-stone-900 flex items-center justify-center">
-              {selectedItem.video ? (
-                <video
-                  src={selectedItem.video}
-                  controls
-                  autoPlay
-                  playsInline
-                  className="w-full h-full object-contain"
-                />
-              ) : (
-                <img
-                  src={selectedItem.image}
-                  alt={selectedItem.title}
-                  className="w-full h-full object-cover"
-                />
-              )}
+            {/* Left Image View with Google Drive Watch Link */}
+            <div className="w-full md:w-1/2 aspect-[4/3] md:aspect-auto relative overflow-hidden bg-stone-900 flex items-center justify-center group/drive">
+              <img
+                src={selectedItem.image}
+                alt={selectedItem.title}
+                className="w-full h-full object-contain"
+              />
+              <a
+                href="https://drive.google.com/drive/folders/1Iw96jLL406pFcSOZYTMkzANU4WYX663P"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/20 transition-colors z-20"
+                title="Watch 4K Cut in Google Drive"
+              >
+                <div className="px-5 py-2.5 rounded-full bg-stone-900/90 hover:bg-rose-600 text-white border border-white/20 backdrop-blur-md flex items-center gap-2 shadow-xl group-hover/drive:scale-105 transition-all">
+                  <Play className="w-4 h-4 fill-current text-amber-300" />
+                  <span className="font-mono text-xs font-bold tracking-wide">Watch on Google Drive</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </div>
+              </a>
             </div>
 
             {/* Right Information - White Theme */}
@@ -445,7 +433,7 @@ export const VelocityGallerySection: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-stone-300/80 text-xs">
                   <div>
                     <span className="text-stone-500 block font-mono text-[10px] uppercase">Format</span>
-                    <span className="text-stone-900 font-medium">4K ProRes Master</span>
+                    <span className="text-stone-900 font-medium">Google Drive 4K Master</span>
                   </div>
                   <div>
                     <span className="text-stone-500 block font-mono text-[10px] uppercase">Role</span>
@@ -454,17 +442,25 @@ export const VelocityGallerySection: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-stone-300/80 mt-8 flex items-center justify-between">
-                <span className="text-xs text-stone-500 font-mono">
-                  REF / #VARUN-0{selectedItem.id}
-                </span>
+              <div className="pt-6 border-t border-stone-300/80 mt-8 flex items-center justify-between gap-3 flex-wrap">
+                <a
+                  href="https://drive.google.com/drive/folders/1Iw96jLL406pFcSOZYTMkzANU4WYX663P"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold tracking-wide transition-all shadow-md cursor-pointer"
+                >
+                  <Play className="w-3.5 h-3.5 fill-current" />
+                  <span>Open in Google Drive</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+
                 <a
                   href="#contact"
                   onClick={() => setSelectedItem(null)}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold tracking-wide transition-all shadow-md cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold tracking-wide transition-all shadow-sm cursor-pointer"
                 >
-                  <span>Inquire About Project</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
+                  <span>Inquire</span>
+                  <ArrowUpRight className="w-3 h-3" />
                 </a>
               </div>
             </div>
