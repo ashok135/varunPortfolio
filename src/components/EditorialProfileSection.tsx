@@ -1,17 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Mail, MapPin, Copy, Check, Volume2, Film, Command } from 'lucide-react';
 
-interface Milestone {
-  id: string;
-  timecode: string;
-  year: string;
-  company: string;
-  role: string;
-  duration: string;
-  summary: string;
-  tools: string[];
-}
-
 interface Keycap {
   id: string;
   badge: string;
@@ -49,9 +38,6 @@ export const EditorialProfileSection: React.FC = () => {
   // Active Keycap state
   const [activeKeyId, setActiveKeyId] = useState<string>('pr');
   const [pressedKey, setPressedKey] = useState<string | null>(null);
-
-  // Active Milestone Scrubber State
-  const [activeMilestoneIdx, setActiveMilestoneIdx] = useState<number>(2);
 
   // Scroll listener for 3D perspective dynamics
   useEffect(() => {
@@ -109,7 +95,7 @@ export const EditorialProfileSection: React.FC = () => {
 
   // Clipboard copy with bulletproof fallback
   const handleCopyEmail = async () => {
-    const textToCopy = 'varunp.creates@gmail.com';
+    const textToCopy = 'Varunvicky2003@gmail.com';
     let copied = false;
 
     if (navigator.clipboard && window.isSecureContext) {
@@ -284,52 +270,6 @@ export const EditorialProfileSection: React.FC = () => {
 
   const activeKey = keycaps.find(k => k.id === activeKeyId) || keycaps[0];
 
-  // Career milestones
-  const milestones: Milestone[] = [
-    {
-      id: 'm1',
-      timecode: '00:04:12',
-      year: '7 MONTHS',
-      company: 'Tech 4 Billion',
-      role: 'Video Editor',
-      duration: 'Digital Media Post-Production',
-      summary: 'Engineered high-retention footage cuts, pacing curves, dynamic title inserts, and multi-platform aspect ratio deliverables.',
-      tools: ['Premiere Pro', 'After Effects', 'Audition'],
-    },
-    {
-      id: 'm2',
-      timecode: '00:11:18',
-      year: '4 MONTHS',
-      company: 'Speed News Media',
-      role: 'Broadcast Video Editor',
-      duration: 'Live Television Newsroom',
-      summary: 'Mastered live breaking-news packages, speed-turnaround multi-camera timelines, audio normalization to -14 LUFS, and lower-third overlays.',
-      tools: ['Premiere Pro', 'DaVinci Resolve', 'Broadcast FX'],
-    },
-    {
-      id: 'm3',
-      timecode: '00:19:42',
-      year: '2023 — PRESENT',
-      company: 'Independent Post-Lab',
-      role: 'Lead Video Editor & Designer',
-      duration: 'Commercials & YouTube Docs',
-      summary: 'Directing post-production workflows for narrative documentaries, commercial brand spots, cinematic color grades, and bespoke visual identity design.',
-      tools: ['DaVinci Studio', 'Premiere Pro', 'After Effects', 'Photoshop'],
-    },
-    {
-      id: 'm4',
-      timecode: '00:24:00',
-      year: '2024 — 2028',
-      company: 'Lovely Professional Univ.',
-      role: 'Bachelor of Design (B.Des)',
-      duration: 'Graphic & Narrative Systems',
-      summary: 'Academic foundation in Swiss typography, visual composition grids, cinematic color harmony, and motion narrative storytelling.',
-      tools: ['Design Theory', 'Visual Hierarchy', 'Brand Systems'],
-    },
-  ];
-
-  const currentMilestone = milestones[activeMilestoneIdx] || milestones[2];
-
   // Dynamic 3D scroll rotation angles
   const filmCellScrollRotateY = (scrollProgress - 0.5) * 16;
   const filmCellScrollRotateX = (0.5 - scrollProgress) * 8;
@@ -440,7 +380,7 @@ export const EditorialProfileSection: React.FC = () => {
                 title="Copy Email"
               >
                 <Mail className="w-3.5 h-3.5 text-amber-300 shrink-0" />
-                <span className="truncate">varunp.creates@gmail.com</span>
+                <span className="truncate">Varunvicky2003@gmail.com</span>
                 {copiedEmail ? (
                   <Check className="w-3.5 h-3.5 text-emerald-400 ml-1 shrink-0" />
                 ) : (
@@ -722,93 +662,6 @@ export const EditorialProfileSection: React.FC = () => {
                     }}
                   />
                 </div>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-        {/* ======================================================== */}
-        {/* 3. 3D PERSPECTIVE CAREER MILESTONES DECK                 */}
-        {/* ======================================================== */}
-        <div className="scroll-reveal my-12 pt-10 border-t border-[#dfd8c7]">
-          
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <span className="font-mono text-xs uppercase tracking-widest text-[#706c62] font-semibold block mb-1">
-                MAGNETIC TIMELINE SCRUBBER • PRODUCTION CHRONICLE
-              </span>
-              <h3 className="font-serif italic font-normal text-3xl sm:text-5xl text-[#1c1b18]">
-                Work Milestones & Career Reels
-              </h3>
-            </div>
-            <div className="font-mono text-xs text-[#706c62] hidden sm:block">
-              ACTIVE NODE: {currentMilestone.company}
-            </div>
-          </div>
-
-          {/* Magnetic Timeline Track */}
-          <div className="w-full bg-[#ede8dd] rounded-2xl p-4 sm:p-6 border border-[#dfd8c7] shadow-xs">
-            
-            {/* Scrubber Nodes */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
-              {milestones.map((m, idx) => {
-                const isActive = activeMilestoneIdx === idx;
-                return (
-                  <button
-                    key={m.id}
-                    onClick={() => setActiveMilestoneIdx(idx)}
-                    className={`p-4 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                      isActive
-                        ? 'bg-[#f5f2eb] border-[#1c1b18] shadow-md shadow-[#1c1b18]/5 scale-[1.02]'
-                        : 'bg-[#ede8dd] border-[#dfd8c7] hover:border-[#1c1b18]'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between font-mono text-[10px] mb-1.5">
-                      <span className={isActive ? 'text-[#1c1b18] font-bold' : 'text-[#706c62]'}>
-                        TC: {m.timecode}
-                      </span>
-                      <span className="text-[#8c877b]">{m.year}</span>
-                    </div>
-                    <div className="font-display font-bold text-sm text-[#1c1b18] truncate">
-                      {m.company}
-                    </div>
-                    <div className="font-sans text-xs text-[#706c62] mt-0.5">
-                      {m.role}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Active Milestone Expanded Detail Card */}
-            <div className="bg-[#f5f2eb] p-6 rounded-xl border border-[#dfd8c7] flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xs">
-              <div className="space-y-2 max-w-2xl">
-                <div className="flex items-center gap-3">
-                  <span className="font-mono text-xs text-[#1c1b18] font-bold">
-                    {currentMilestone.duration}
-                  </span>
-                  <span className="text-[#c5bca7]">•</span>
-                  <span className="font-mono text-xs text-[#706c62]">
-                    {currentMilestone.year}
-                  </span>
-                </div>
-                <h4 className="font-serif italic text-2xl text-[#1c1b18]">
-                  {currentMilestone.company} — <span className="font-sans font-normal text-sm text-[#706c62]">{currentMilestone.role}</span>
-                </h4>
-                <p className="font-sans text-xs sm:text-sm text-[#4a473f] leading-relaxed">
-                  {currentMilestone.summary}
-                </p>
-              </div>
-
-              {/* Tools Tags */}
-              <div className="flex flex-wrap gap-2 md:max-w-xs">
-                {currentMilestone.tools.map((t) => (
-                  <span key={t} className="px-3 py-1 rounded-md bg-[#ede8dd] border border-[#dfd8c7] text-xs font-mono text-[#1c1b18]">
-                    {t}
-                  </span>
-                ))}
               </div>
             </div>
 

@@ -117,8 +117,8 @@ export const ContactSection: React.FC = () => {
 
               <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-4 text-xs font-mono text-[#706c62] text-center sm:text-left">
-                  <a href="mailto:varunp.creates@gmail.com" className="hover:text-[#1c1b18] underline truncate">
-                    varunp.creates@gmail.com
+                  <a href="mailto:Varunvicky2003@gmail.com" className="hover:text-[#1c1b18] underline truncate">
+                    Varunvicky2003@gmail.com
                   </a>
                   <span>•</span>
                   <span>Hyderabad, India</span>
