@@ -20,6 +20,12 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-6 text-[11px]">
+          <a href="tel:+919513356331" className="hover:text-[#1c1b18] transition-colors font-bold text-[#1c1b18]">
+            +91 95133 56331
+          </a>
+          <a href="mailto:Varunvicky2003@gmail.com" className="hover:text-[#1c1b18] transition-colors">
+            EMAIL
+          </a>
           <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-[#1c1b18] transition-colors">
             INSTAGRAM
           </a>

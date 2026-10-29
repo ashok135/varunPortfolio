@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Mail, MapPin, Copy, Check, Volume2, Film, Command } from 'lucide-react';
+import { Mail, Phone, MapPin, Copy, Check, Volume2, Film, Command } from 'lucide-react';
 
 interface Keycap {
   id: string;
@@ -387,6 +387,14 @@ export const EditorialProfileSection: React.FC = () => {
                   <Copy className="w-3.5 h-3.5 text-[#a69e8b] ml-1 shrink-0" />
                 )}
               </button>
+              <a
+                href="tel:+919513356331"
+                className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full border border-[#c5bca7] hover:border-[#1c1b18] hover:bg-[#dfd8c7] text-[#1c1b18] transition-all cursor-pointer text-[11px] sm:text-xs font-mono shadow-xs"
+                title="Call Varun"
+              >
+                <Phone className="w-3.5 h-3.5 text-[#1c1b18] shrink-0" />
+                <span>+91 95133 56331</span>
+              </a>
               <div className="flex items-center gap-1.5 text-xs font-mono text-[#706c62]">
                 <MapPin className="w-3.5 h-3.5 text-[#1c1b18] shrink-0" />
                 <span>Bangalore, India</span>

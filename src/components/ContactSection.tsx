@@ -121,6 +121,10 @@ export const ContactSection: React.FC = () => {
                     Varunvicky2003@gmail.com
                   </a>
                   <span>•</span>
+                  <a href="tel:+919513356331" className="hover:text-[#1c1b18] underline">
+                    +91 95133 56331
+                  </a>
+                  <span>•</span>
                   <span>Bangalore, India</span>
                 </div>
 
