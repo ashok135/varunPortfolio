@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useVelocity, useSpring, useTransform } from 'framer-motion';
-import { Sparkles, ArrowUpRight, X, Play } from 'lucide-react';
+import { ArrowUpRight, X, Play } from 'lucide-react';
 
 interface GalleryPlaneItem {
   id: number;
@@ -103,10 +103,12 @@ const DiagonalPlaneCard: React.FC<{
   useEffect(() => {
     const handleResize = () => {
       const w = window.innerWidth;
-      if (w < 640) {
-        setPitch({ x: 145, y: 88 });
+      if (w < 400) {
+        setPitch({ x: 120, y: 70 });
+      } else if (w < 640) {
+        setPitch({ x: 145, y: 84 });
       } else if (w < 1024) {
-        setPitch({ x: 180, y: 110 });
+        setPitch({ x: 180, y: 105 });
       } else {
         setPitch({ x: 220, y: 130 });
       }
@@ -192,7 +194,7 @@ const DiagonalPlaneCard: React.FC<{
       role="button"
       tabIndex={0}
       aria-label={`Open project: ${item.title}`}
-      className="absolute top-1/2 left-1/2 w-[215px] sm:w-[265px] md:w-[305px] aspect-[3/4] cursor-pointer select-none origin-center rounded-3xl will-change-transform -ml-[107px] sm:-ml-[132px] md:-ml-[152px] -mt-[143px] sm:-mt-[176px] md:-mt-[203px]"
+      className="absolute top-1/2 left-1/2 w-[180px] min-[400px]:w-[210px] sm:w-[260px] md:w-[295px] lg:w-[310px] aspect-[3/4] cursor-pointer select-none origin-center rounded-2xl sm:rounded-3xl will-change-transform -ml-[90px] min-[400px]:-ml-[105px] sm:-ml-[130px] md:-ml-[147px] lg:-ml-[155px] -mt-[120px] min-[400px]:-mt-[140px] sm:-mt-[173px] md:-mt-[196px] lg:-mt-[206px]"
       style={{
         x,
         y,
@@ -276,6 +278,16 @@ const DiagonalPlaneCard: React.FC<{
 export const VelocityGallerySection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedItem, setSelectedItem] = useState<GalleryPlaneItem | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Track scroll progress across a comfortable runway
   const { scrollYProgress } = useScroll({
@@ -308,7 +320,7 @@ export const VelocityGallerySection: React.FC = () => {
       className="relative h-[160vh] bg-[#faf8f5] text-[#1c1917] overflow-clip"
     >
       {/* Sticky 3D Viewport Screen */}
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-between items-center overflow-hidden py-6 sm:py-8 px-4 sm:px-8">
+      <div className="sticky top-0 h-[100dvh] w-full flex flex-col justify-between items-center overflow-hidden py-4 sm:py-8 px-3 sm:px-8">
         
         {/* Botanical Editorial Ambient Glow & Paper Texture */}
         <div className="absolute inset-0 pointer-events-none">
@@ -319,19 +331,12 @@ export const VelocityGallerySection: React.FC = () => {
         </div>
 
         {/* Section Header */}
-        <div className="relative z-30 text-center max-w-3xl pt-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-900/5 border border-stone-300 text-stone-800 backdrop-blur-md mb-2 shadow-xs">
-            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-            <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-widest uppercase text-stone-800">
-              03 / 3D Velocity Carousel
-            </span>
-          </div>
-
+        <div className="relative z-30 text-center max-w-3xl pt-2 px-2">
           <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-black tracking-tight text-stone-900 uppercase">
             Planes in <span className="font-script italic font-normal text-rose-600 capitalize">Velocity</span>
           </h2>
           
-          <p className="text-xs sm:text-sm text-stone-600 font-sans mt-1.5 max-w-lg mx-auto">
+          <p className="text-xs sm:text-sm text-stone-600 font-sans mt-1.5 max-w-lg mx-auto leading-relaxed">
             Horizontal-diagonal 3D flow with velocity wave dynamics. Every card on screen is instantly hoverable & clickable to inspect.
           </p>
         </div>
@@ -342,7 +347,7 @@ export const VelocityGallerySection: React.FC = () => {
         <div 
           className="relative w-full flex-1 flex items-center justify-center pointer-events-auto my-auto"
           style={{
-            perspective: '1300px',
+            perspective: isMobile ? '850px' : '1300px',
             perspectiveOrigin: '50% 50%',
           }}
         >
@@ -371,24 +376,24 @@ export const VelocityGallerySection: React.FC = () => {
       {/* ============================================================ */}
       {selectedItem && (
         <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-xl animate-fade-in"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-xl animate-fade-in"
           onClick={() => setSelectedItem(null)}
         >
           <div 
-            className="relative w-full max-w-4xl bg-[#faf8f5] border border-stone-300 rounded-3xl overflow-hidden shadow-[0_40px_90px_rgba(28,25,23,0.35)] flex flex-col md:flex-row transform transition-all duration-300 text-stone-900"
+            className="relative w-full max-w-4xl max-h-[90dvh] overflow-y-auto bg-[#faf8f5] border border-stone-300 rounded-2xl sm:rounded-3xl shadow-[0_40px_90px_rgba(28,25,23,0.35)] flex flex-col md:flex-row transform transition-all duration-300 text-stone-900"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
             <button
               onClick={() => setSelectedItem(null)}
-              className="absolute top-4 right-4 z-30 p-2.5 rounded-full bg-white/90 text-stone-800 hover:text-stone-950 hover:bg-white transition-all border border-stone-300 cursor-pointer shadow-md"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 z-30 p-2 sm:p-2.5 rounded-full bg-white/90 text-stone-800 hover:text-stone-950 hover:bg-white transition-all border border-stone-300 cursor-pointer shadow-md"
               aria-label="Close modal"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
 
             {/* Left Image View with Google Drive Watch Link */}
-            <div className="w-full md:w-1/2 aspect-[4/3] md:aspect-auto relative overflow-hidden bg-stone-900 flex items-center justify-center group/drive">
+            <div className="w-full md:w-1/2 aspect-[16/10] sm:aspect-[4/3] md:aspect-auto max-h-[260px] sm:max-h-[340px] md:max-h-none relative overflow-hidden bg-stone-900 flex items-center justify-center group/drive shrink-0">
               <img
                 src={selectedItem.image}
                 alt={selectedItem.title}
@@ -401,19 +406,19 @@ export const VelocityGallerySection: React.FC = () => {
                 className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/20 transition-colors z-20"
                 title="Watch 4K Cut in Google Drive"
               >
-                <div className="px-5 py-2.5 rounded-full bg-stone-900/90 hover:bg-rose-600 text-white border border-white/20 backdrop-blur-md flex items-center gap-2 shadow-xl group-hover/drive:scale-105 transition-all">
-                  <Play className="w-4 h-4 fill-current text-amber-300" />
-                  <span className="font-mono text-xs font-bold tracking-wide">Watch on Google Drive</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
+                <div className="px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-stone-900/90 hover:bg-rose-600 text-white border border-white/20 backdrop-blur-md flex items-center gap-2 shadow-xl group-hover/drive:scale-105 transition-all text-xs">
+                  <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current text-amber-300" />
+                  <span className="font-mono text-[11px] sm:text-xs font-bold tracking-wide">Watch on Google Drive</span>
+                  <ArrowUpRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 </div>
               </a>
             </div>
 
             {/* Right Information - White Theme */}
-            <div className="w-full md:w-1/2 p-6 sm:p-10 flex flex-col justify-between bg-gradient-to-b from-[#faf8f5] to-[#f4f0e8]">
+            <div className="w-full md:w-1/2 p-5 sm:p-8 md:p-10 flex flex-col justify-between bg-gradient-to-b from-[#faf8f5] to-[#f4f0e8]">
               <div>
-                <div className="flex items-center gap-2.5 mb-3">
-                  <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-amber-500/15 text-amber-800 border border-amber-500/30">
+                <div className="flex items-center gap-2.5 mb-2.5 sm:mb-3 flex-wrap">
+                  <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-amber-500/15 text-amber-800 border border-amber-500/30">
                     {selectedItem.category}
                   </span>
                   <span className="text-xs text-stone-500 font-mono">
@@ -425,15 +430,15 @@ export const VelocityGallerySection: React.FC = () => {
                   </span>
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl font-display font-black text-stone-900 tracking-tight mt-1">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-display font-black text-stone-900 tracking-tight mt-1">
                   {selectedItem.title}
                 </h3>
 
-                <p className="text-sm sm:text-base text-stone-700 font-sans leading-relaxed mt-4">
+                <p className="text-xs sm:text-sm md:text-base text-stone-700 font-sans leading-relaxed mt-3 sm:mt-4">
                   {selectedItem.description}
                 </p>
 
-                <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-stone-300/80 text-xs">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-stone-300/80 text-xs">
                   <div>
                     <span className="text-stone-500 block font-mono text-[10px] uppercase">Format</span>
                     <span className="text-stone-900 font-medium">Google Drive 4K Master</span>
@@ -445,12 +450,12 @@ export const VelocityGallerySection: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-stone-300/80 mt-8 flex items-center justify-between gap-3 flex-wrap">
+              <div className="pt-5 sm:pt-6 border-t border-stone-300/80 mt-6 sm:mt-8 flex items-center justify-between gap-3 flex-wrap">
                 <a
                   href={selectedItem.driveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold tracking-wide transition-all shadow-md cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold tracking-wide transition-all shadow-md cursor-pointer"
                 >
                   <Play className="w-3.5 h-3.5 fill-current" />
                   <span>Open in Google Drive</span>
@@ -460,10 +465,10 @@ export const VelocityGallerySection: React.FC = () => {
                 <a
                   href="#contact"
                   onClick={() => setSelectedItem(null)}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold tracking-wide transition-all shadow-sm cursor-pointer"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold tracking-wide transition-all shadow-sm cursor-pointer"
                 >
                   <span>Inquire</span>
-                  <ArrowUpRight className="w-3 h-3" />
+                  <ArrowUpRight className="w-3.5 h-3.5" />
                 </a>
               </div>
             </div>
