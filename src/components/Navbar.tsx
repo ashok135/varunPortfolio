@@ -24,7 +24,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
     { label: '3D Gallery', href: '#velocity-gallery' },
     { label: 'Works', href: '#works' },
     { label: 'Experience', href: '#experience' },
-    { label: 'Contact', href: 'mailto:Varunvicky2003@gmail.com' },
+    { label: 'Contact', href: '#contact' },
   ];
 
   return (
@@ -61,7 +61,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
         {/* Right Controls: Inquire & Mobile Menu */}
         <div className="flex items-center gap-3">
           <a
-            href="mailto:Varunvicky2003@gmail.com"
+            href="#contact"
             className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-[#1c1b18] text-xs font-medium text-[#1c1b18] hover:bg-[#1c1b18] hover:text-[#f5f2eb] transition-all duration-200"
           >
             <span>Inquire</span>
@@ -96,7 +96,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
           ))}
           <div className="pt-3 border-t border-[#dfd8c7]">
             <a
-              href="mailto:Varunvicky2003@gmail.com"
+              href="#contact"
               onClick={() => setMobileMenuOpen(false)}
               className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 rounded-full bg-[#1c1b18] text-[#f5f2eb] text-xs font-medium"
             >

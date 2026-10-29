@@ -6,6 +6,7 @@ import { EditorialProfileSection } from './components/EditorialProfileSection';
 import { VelocityGallerySection } from './components/VelocityGallerySection';
 import { HorizontalBentoProjects } from './components/HorizontalBentoProjects';
 import { ExperienceJournal } from './components/ExperienceJournal';
+import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { HuymlPreloader } from './components/HuymlPreloader';
 
@@ -122,6 +123,7 @@ export const App: React.FC = () => {
         <VelocityGallerySection />
         <HorizontalBentoProjects />
         <ExperienceJournal />
+        <ContactSection />
       </main>
       <Footer />
     </div>
