@@ -389,7 +389,7 @@ export const EditorialProfileSection: React.FC = () => {
               </button>
               <div className="flex items-center gap-1.5 text-xs font-mono text-[#706c62]">
                 <MapPin className="w-3.5 h-3.5 text-[#1c1b18] shrink-0" />
-                <span>Hyderabad, India</span>
+                <span>Bangalore, India</span>
               </div>
             </div>
 
@@ -509,9 +509,6 @@ export const EditorialProfileSection: React.FC = () => {
                 Artisan 3D Keycaps & Mastered Tools
               </h3>
             </div>
-            <p className="font-mono text-xs text-[#706c62]">
-              [Click any 3D key to engage tactile inspector]
-            </p>
           </div>
 
           {/* 3D Keycaps Orbit Canvas */}

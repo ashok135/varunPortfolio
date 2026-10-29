@@ -293,7 +293,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         
         <div className="relative w-full flex flex-col items-center">
           
-          {/* Luminous Cursive Script Accent: "Creative" elevated on mobile so C & r graze behind T, eative clearly visible above */}
+          {/* Luminous Cursive Script Accent: "Varun" elevated on mobile so V & a graze behind T, arun clearly visible above */}
           <div 
             className="fly-creative absolute -top-7 sm:-top-4 md:-top-6 lg:-top-8 z-0 pointer-events-none select-none"
             style={{
@@ -308,7 +308,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 textShadow: '0 0 28px rgba(250, 204, 21, 0.85), 0 0 10px rgba(250, 204, 21, 0.6), 0 2px 6px rgba(0,0,0,0.12)',
               }}
             >
-              Creative
+              Varun
             </span>
           </div>
 
@@ -359,25 +359,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </h1>
 
           {/* Bottom Subtext Row — Framed cleanly under the title width */}
-          <div className="w-full max-w-[330px] sm:max-w-3xl md:max-w-4xl flex items-center justify-between px-1 sm:px-6 mt-3 sm:mt-2 z-10 pointer-events-auto">
+          <div className="w-full max-w-[330px] sm:max-w-3xl md:max-w-4xl flex items-center justify-center px-1 sm:px-6 mt-3 sm:mt-2 z-10 pointer-events-auto">
             <div className="fly-subtext-left flex items-center gap-1.5 sm:gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse hidden sm:inline-block" />
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse inline-block" />
               <span 
                 className={`text-[11px] sm:text-xs md:text-sm font-sans font-bold tracking-widest uppercase transition-colors duration-300 ${
                   isColorActive ? 'text-rose-900' : 'text-[#524e44]'
                 }`}
               >
                 Video Editor
-              </span>
-            </div>
-
-            <div className="fly-subtext-right flex items-center gap-1.5 sm:gap-2">
-              <span 
-                className={`text-[11px] sm:text-xs md:text-sm font-sans font-bold tracking-widest uppercase transition-colors duration-300 ${
-                  isColorActive ? 'text-purple-900' : 'text-[#524e44]'
-                }`}
-              >
-                Presented By: Varun P
               </span>
             </div>
           </div>

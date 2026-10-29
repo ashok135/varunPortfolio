@@ -121,7 +121,7 @@ export const ContactSection: React.FC = () => {
                     Varunvicky2003@gmail.com
                   </a>
                   <span>•</span>
-                  <span>Hyderabad, India</span>
+                  <span>Bangalore, India</span>
                 </div>
 
                 <button
